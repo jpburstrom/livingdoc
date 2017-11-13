@@ -1,0 +1,3 @@
+[submodule "setup/lotta-keyboard/ledmatrix"]
+	path = setup/lotta-keyboard/ledmatrix
+	url = https://github.com/adafruit/rpi-rgb-led-matrix/
