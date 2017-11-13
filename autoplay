@@ -2,6 +2,8 @@
 
 cd `dirname $0`
 
+sleep 5
+
 SETUP=`bash /boot/LD_CURRENT`
 PLAYCMD=/usr/bin/play
 ROOTDIR=`dirname $0`/setup/$SETUP

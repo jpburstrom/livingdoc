@@ -9,4 +9,4 @@ WorkingDirectory=/home/pi/livingdoc/
 Restart=on-failure
 
 [Install]
-WantedBy=local-fs.target
+WantedBy=multi-user.target
