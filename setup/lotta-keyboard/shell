@@ -1,12 +1,202 @@
 #!/usr/bin/env python
 
-def run(line):
-    with open("/tmp/shell-output", "a") as myfile:
-        myfile.write("".join([line, "\n"]))
-    print line
+import sys
+import re
+import string
+from time import time, sleep
+from threading import Timer
+
+from rpi_rgb_led_matrix import printer
+
+class _GetchUnix:
+    def __init__(self):
+        import tty, sys
+
+    def __call__(self):
+        import sys, tty, termios
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+        try:
+            tty.setraw(sys.stdin.fileno())
+            ch = sys.stdin.read(1)
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+        return ch
+
+class CharSequencer: 
+    def __init__(self, callback):
+        self.score = []
+        self.index = 0
+        self.callback = callback
+        self.timer = None
+        self.stopped = True
+        self.recording = False
+        self.loop = True
+        self.last_event_time = 0
+        self.monitor = True
+        
+        #Max time for 
+        self.max_time = 3
+
+    def add(self, t, char):
+        self.score.append((t, char))
+    
+    def clear(self):
+        self.score = [(self.max_time, chr(10))]
+
+    def play_single(self, char, index):
+        if self.stopped or self.recording:
+            print "stopped"
+            return
+        self.callback(char)
+        self.schedule(index + 1)
+
+    def record(self):
+        print "Recording"
+        self.recording = True
+        self.last_event_time = False
+        pass
+
+    def record_char(self, char):
+        if (self.recording):
+            if not self.last_event_time:
+                t = 0
+            else:
+                t = min(self.max_time, time() - self.last_event_time); 
+            print t
+            self.score.append((t, char))
+            self.last_event_time = time()
+
+            if (self.monitor):
+                self.callback(char)
 
 
-if __name__ == "__main__":
-    while True:
-        cmd = raw_input(">")
-        run(cmd)
+    def play(self):
+        print "Playing"
+        self.recording = False
+        sys.stdout.write('\n')
+        sys.stdout.flush()
+        if self.score:
+            self.stopped = False
+            self.schedule(0);
+        else:
+            self.stop()
+
+    #Schedule single event at index
+    def schedule(self, index):
+        try:
+            self.timer = Timer(self.score[index][0], self.play_single, (self.score[index][1], index)).start()
+        except IndexError:
+            if (self.loop):
+                index = 0
+                self.timer = Timer(self.max_time, self.play_single, (self.score[index][1], index)).start()
+
+    def stop(self):
+        print "Stopped"
+        self.stopped = True
+        self.recording = False
+        if (self.timer):
+            self.timer.cancel()
+
+class ModeSwitcher:
+    def __init__(self, cb, until=3):
+        self.mode = 0
+        self.mode_counter = 0
+        self.callback = cb
+        self.until = until
+
+    def set_mode(self, mode):
+        self.mode = mode
+        self.callback(mode)
+
+    def switch(self):
+        self.mode = 1 - self.mode
+        self.callback(self.mode)
+
+    def count(self):
+        self.mode_counter += 1
+        if (self.mode_counter == self.until):
+            self.switch()
+            self.reset()
+
+    def reset(self):
+        self.mode_counter = 0
+
+
+
+def seq_callback(char):
+    #Debug printout
+    if True:
+        sys.stdout.write(char)
+        if ord(char) == 10:
+            for i in range(80):
+                sys.stdout.write('\b');
+        sys.stdout.flush()
+
+def toggle_sequencer(i):
+    if i: 
+        seq.play()
+    else:
+        seq.clear()
+        seq.record()
+        
+def do_quit(i):
+    if i:
+        print("quitting")
+        sys.exit(0)
+
+getch = _GetchUnix()
+seq = CharSequencer(seq_callback)
+switcher = ModeSwitcher(toggle_sequencer)
+switcher.set_mode(0)
+
+
+quit_switcher = ModeSwitcher(do_quit, 6)
+
+
+whitespace = re.compile('^\s$')
+alphanumeric = re.compile('^\w$')
+x = b''
+
+def is_printable(ch, encoding):
+    if encoding is not 'ascii' or ch in string.printable:
+        return ch
+    else:
+        return False
+
+def wait_for_char(x='', encoding='ascii'):
+
+    input = getch()
+
+    # Change all whitespace to linebreak
+    if (whitespace.match(input)):
+        input = chr(10)
+
+    # Press esc three times to switch mode
+    if not x and ord(input) is 27:
+        switcher.count()
+        #quit_switcher.count()
+
+        return False
+
+    switcher.reset()
+    quit_switcher.reset()
+    
+    x = b''.join([x, input])
+    try: 
+        x.decode(encoding)
+    except UnicodeDecodeError:
+        result = wait_for_char(x, 'utf-8')
+    else:
+        result = is_printable(x, encoding)
+
+    return result
+
+while True:
+    try:
+        out = wait_for_char()
+        if out:
+            seq.record_char(out)
+        sleep(0.05)
+    except KeyboardInterrupt:
+        pass
