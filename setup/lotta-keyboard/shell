@@ -6,7 +6,7 @@ import string
 from time import time, sleep
 from threading import Timer
 
-from rpi_rgb_led_matrix import printer
+from ledmatrix.printer import Printer
 
 class _GetchUnix:
     def __init__(self):
@@ -63,7 +63,6 @@ class CharSequencer:
                 t = 0
             else:
                 t = min(self.max_time, time() - self.last_event_time); 
-            print t
             self.score.append((t, char))
             self.last_event_time = time()
 
@@ -122,9 +121,10 @@ class ModeSwitcher:
     def reset(self):
         self.mode_counter = 0
 
-
+printer = Printer()
 
 def seq_callback(char):
+    printer.draw_char(char)
     #Debug printout
     if True:
         sys.stdout.write(char)
