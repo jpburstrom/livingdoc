@@ -4,7 +4,7 @@ After=getty@tty2.service
 
 [Service]
 Type=oneshot
-ExecStart=/home/pi/livingdoc/tests/start-shell.sh
+ExecStart=/home/pi/livingdoc/shell
 StandardInput=tty
 TTYPath=/dev/tty2
 TTYReset=yes

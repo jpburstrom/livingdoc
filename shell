@@ -1,0 +1,10 @@
+#!/bin/bash
+
+SETUP=`bash /boot/LD_CURRENT`
+ROOTDIR=`dirname $0`/setup/$SETUP
+shell=$ROOTDIR/shell
+
+if [ -f $shell ]; then
+    chvt 2
+    $shell
+fi
