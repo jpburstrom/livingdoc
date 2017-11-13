@@ -1,0 +1,616 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/nodejs',
+1 verbose cli   '/usr/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'git+https://github.com/Bornholm/node-keyboard.git' ]
+2 info using npm@2.15.11
+3 info using node@v4.8.4
+4 verbose install initial load of /home/pi/livingdoc/test/package.json
+5 verbose installManyTop reading scoped package data from /home/pi/livingdoc/test/node_modules/body-parser/package.json
+6 verbose installManyTop reading scoped package data from /home/pi/livingdoc/test/node_modules/cookie-parser/package.json
+7 verbose installManyTop reading scoped package data from /home/pi/livingdoc/test/node_modules/debug/package.json
+8 verbose installManyTop reading scoped package data from /home/pi/livingdoc/test/node_modules/express/package.json
+9 verbose installManyTop reading scoped package data from /home/pi/livingdoc/test/node_modules/hbs/package.json
+10 verbose installManyTop reading scoped package data from /home/pi/livingdoc/test/node_modules/morgan/package.json
+11 verbose installManyTop reading scoped package data from /home/pi/livingdoc/test/node_modules/serve-favicon/package.json
+12 verbose readDependencies loading dependencies from /home/pi/livingdoc/test/package.json
+13 silly cache add args [ 'git+https://github.com/Bornholm/node-keyboard.git', null ]
+14 verbose cache add spec git+https://github.com/Bornholm/node-keyboard.git
+15 silly cache add parsed spec Result {
+15 silly cache add   raw: 'git+https://github.com/Bornholm/node-keyboard.git',
+15 silly cache add   scope: null,
+15 silly cache add   name: null,
+15 silly cache add   rawSpec: 'git+https://github.com/Bornholm/node-keyboard.git',
+15 silly cache add   spec: 'git+https://github.com/Bornholm/node-keyboard.git',
+15 silly cache add   type: 'hosted',
+15 silly cache add   hosted:
+15 silly cache add    { type: 'github',
+15 silly cache add      ssh: 'git@github.com:Bornholm/node-keyboard.git',
+15 silly cache add      sshUrl: 'git+ssh://git@github.com/Bornholm/node-keyboard.git',
+15 silly cache add      httpsUrl: 'git+https://github.com/Bornholm/node-keyboard.git',
+15 silly cache add      gitUrl: 'git://github.com/Bornholm/node-keyboard.git',
+15 silly cache add      shortcut: 'github:Bornholm/node-keyboard',
+15 silly cache add      directUrl: 'https://raw.githubusercontent.com/Bornholm/node-keyboard/master/package.json' } }
+16 verbose addRemoteGit caching git+https://github.com/Bornholm/node-keyboard.git
+17 verbose addRemoteGit git+https://github.com/Bornholm/node-keyboard.git is a repository hosted by github
+18 silly tryClone cloning git+https://github.com/Bornholm/node-keyboard.git via git+https://github.com/Bornholm/node-keyboard.git
+19 verbose tryClone https-github-com-Bornholm-node-keyboard-git-345c303b not in flight; caching
+20 verbose correctMkdir /home/pi/.npm/_git-remotes correctMkdir not in flight; initializing
+21 info git [ 'clone',
+21 info git   '--template=/home/pi/.npm/_git-remotes/_templates',
+21 info git   '--mirror',
+21 info git   'https://github.com/Bornholm/node-keyboard.git',
+21 info git   '/home/pi/.npm/_git-remotes/https-github-com-Bornholm-node-keyboard-git-345c303b' ]
+22 verbose mirrorRemote git+https://github.com/Bornholm/node-keyboard.git git clone https://github.com/Bornholm/node-keyboard.git
+23 verbose correctMkdir /home/pi/.npm/_git-remotes correctMkdir not in flight; initializing
+24 verbose setPermissions git+https://github.com/Bornholm/node-keyboard.git set permissions on /home/pi/.npm/_git-remotes/https-github-com-Bornholm-node-keyboard-git-345c303b
+25 verbose resolveHead git+https://github.com/Bornholm/node-keyboard.git original treeish: master
+26 info git [ 'rev-list', '-n1', 'master' ]
+27 silly resolveHead git+https://github.com/Bornholm/node-keyboard.git resolved treeish: 37ec5e5952c2433fd4ba97b9baa1b879a78fa592
+28 verbose resolveHead git+https://github.com/Bornholm/node-keyboard.git resolved Git URL: git+https://github.com/Bornholm/node-keyboard.git#37ec5e5952c2433fd4ba97b9baa1b879a78fa592
+29 silly resolveHead Git working directory: /tmp/npm-11033-34ee6a29/git-cache-c2b660a8b5ca/37ec5e5952c2433fd4ba97b9baa1b879a78fa592
+30 info git [ 'clone',
+30 info git   '/home/pi/.npm/_git-remotes/https-github-com-Bornholm-node-keyboard-git-345c303b',
+30 info git   '/tmp/npm-11033-34ee6a29/git-cache-c2b660a8b5ca/37ec5e5952c2433fd4ba97b9baa1b879a78fa592' ]
+31 verbose cloneResolved git+https://github.com/Bornholm/node-keyboard.git clone Cloning into '/tmp/npm-11033-34ee6a29/git-cache-c2b660a8b5ca/37ec5e5952c2433fd4ba97b9baa1b879a78fa592'...
+31 verbose cloneResolved done.
+32 info git [ 'checkout', '37ec5e5952c2433fd4ba97b9baa1b879a78fa592' ]
+33 verbose checkoutTreeish git+https://github.com/Bornholm/node-keyboard.git checkout Note: checking out '37ec5e5952c2433fd4ba97b9baa1b879a78fa592'.
+33 verbose checkoutTreeish
+33 verbose checkoutTreeish You are in 'detached HEAD' state. You can look around, make experimental
+33 verbose checkoutTreeish changes and commit them, and you can discard any commits you make in this
+33 verbose checkoutTreeish state without impacting any branches by performing another checkout.
+33 verbose checkoutTreeish
+33 verbose checkoutTreeish If you want to create a new branch to retain commits you create, you may
+33 verbose checkoutTreeish do so (now or later) by using -b with the checkout command again. Example:
+33 verbose checkoutTreeish
+33 verbose checkoutTreeish   git checkout -b <new-branch-name>
+33 verbose checkoutTreeish
+33 verbose checkoutTreeish HEAD is now at 37ec5e5... Update demo.js, remove node_module from repo, add package.json
+34 verbose addLocalDirectory /home/pi/.npm/node-keyboard/0.0.0/package.tgz not in flight; packing
+35 verbose correctMkdir /home/pi/.npm correctMkdir not in flight; initializing
+36 verbose tar pack [ '/home/pi/.npm/node-keyboard/0.0.0/package.tgz',
+36 verbose tar pack   '/tmp/npm-11033-34ee6a29/git-cache-c2b660a8b5ca/37ec5e5952c2433fd4ba97b9baa1b879a78fa592' ]
+37 verbose tarball /home/pi/.npm/node-keyboard/0.0.0/package.tgz
+38 verbose folder /tmp/npm-11033-34ee6a29/git-cache-c2b660a8b5ca/37ec5e5952c2433fd4ba97b9baa1b879a78fa592
+39 verbose addLocalTarball adding from inside cache /home/pi/.npm/node-keyboard/0.0.0/package.tgz
+40 verbose correctMkdir /home/pi/.npm correctMkdir not in flight; initializing
+41 verbose addRemoteGit data._from: git+https://github.com/Bornholm/node-keyboard.git
+42 verbose addRemoteGit data._resolved: git+https://github.com/Bornholm/node-keyboard.git#37ec5e5952c2433fd4ba97b9baa1b879a78fa592
+43 silly cache afterAdd node-keyboard@0.0.0
+44 verbose afterAdd /home/pi/.npm/node-keyboard/0.0.0/package/package.json not in flight; writing
+45 verbose correctMkdir /home/pi/.npm correctMkdir not in flight; initializing
+46 verbose afterAdd /home/pi/.npm/node-keyboard/0.0.0/package/package.json written
+47 silly install resolved [ { name: 'node-keyboard',
+47 silly install resolved     version: '0.0.0',
+47 silly install resolved     description: 'node-keyboard =============',
+47 silly install resolved     main: 'keyboard.js',
+47 silly install resolved     dependencies: { ref: '~0.1.3' },
+47 silly install resolved     devDependencies: {},
+47 silly install resolved     scripts: { test: 'echo "Error: no test specified" && exit 1' },
+47 silly install resolved     repository:
+47 silly install resolved      { type: 'git',
+47 silly install resolved        url: 'git+https://github.com/Bornholm/node-keyboard.git' },
+47 silly install resolved     author: { name: 'Bornholm' },
+47 silly install resolved     license: 'ISC',
+47 silly install resolved     bugs: { url: 'https://github.com/Bornholm/node-keyboard/issues' },
+47 silly install resolved     homepage: 'https://github.com/Bornholm/node-keyboard',
+47 silly install resolved     gitHead: '37ec5e5952c2433fd4ba97b9baa1b879a78fa592',
+47 silly install resolved     readme: 'node-keyboard\n=============\n\nQuick & dirty keyboard keylogger for NodeJS & Linux\n\nInspired from http://nodebits.org/linux-joystick\n\nInstall\n-------\n\n```\nnpm install git+https://github.com/Bornholm/node-keyboard.git\n```\n\nUsage\n-----\n\nSee demo.js\n\n```javascript\nvar Keyboard = require(\'./keyboard.js\');\n\nvar k = new Keyboard(\'event2\'); // \'event2\' is the file corresponding to my keyboard in /dev/input/\nk.on(\'keyup\', console.log);\nk.on(\'keydown\', console.log);\nk.on(\'keypress\', console.log);\nk.on(\'error\', console.error);\n```\n\nEvents\n\n```javascript\n{ \n  timeS: 1347572085, // Timestamp ( Seconds part )\n  timeMS: 741381, // Timestamp ( Microseconds part )\n  keyCode: 17, // Keyboard code\n  keyId: \'KEY_W\', // Key ID /!\\ Qwerty layout !\n  type: \'keypress\', // Event type\n  dev: \'event2\'  // Device\n}\n```\n\nLicence\n-------\n\nMIT\n',
+47 silly install resolved     readmeFilename: 'README.md',
+47 silly install resolved     _id: 'node-keyboard@0.0.0',
+47 silly install resolved     _shasum: 'af85e23442dea4b2af84886d606977d049415744',
+47 silly install resolved     _from: 'git+https://github.com/Bornholm/node-keyboard.git',
+47 silly install resolved     _resolved: 'git+https://github.com/Bornholm/node-keyboard.git#37ec5e5952c2433fd4ba97b9baa1b879a78fa592' } ]
+48 info install node-keyboard@0.0.0 into /home/pi/livingdoc/test
+49 info installOne node-keyboard@0.0.0
+50 verbose installOne of node-keyboard to /home/pi/livingdoc/test not in flight; installing
+51 verbose correctMkdir /home/pi/.npm/_locks correctMkdir not in flight; initializing
+52 verbose lock using /home/pi/.npm/_locks/node-keyboard-00f0ef0b06206974.lock for /home/pi/livingdoc/test/node_modules/node-keyboard
+53 silly install write writing node-keyboard 0.0.0 to /home/pi/livingdoc/test/node_modules/node-keyboard
+54 verbose unbuild node_modules/node-keyboard
+55 silly gentlyRm /home/pi/livingdoc/test/node_modules/node-keyboard is being purged from base /home/pi/livingdoc/test
+56 verbose gentlyRm don't care about contents; nuking /home/pi/livingdoc/test/node_modules/node-keyboard
+57 verbose tar unpack /home/pi/.npm/node-keyboard/0.0.0/package.tgz
+58 verbose tar unpacking to /home/pi/livingdoc/test/node_modules/node-keyboard
+59 silly gentlyRm /home/pi/livingdoc/test/node_modules/node-keyboard is being purged
+60 verbose gentlyRm don't care about contents; nuking /home/pi/livingdoc/test/node_modules/node-keyboard
+61 silly gunzTarPerm modes [ '755', '644' ]
+62 silly gunzTarPerm extractEntry package.json
+63 silly gunzTarPerm extractEntry .npmignore
+64 silly gunzTarPerm extractEntry README.md
+65 silly gunzTarPerm extractEntry demo.js
+66 silly gunzTarPerm extractEntry keyboard.js
+67 verbose write writing to /home/pi/livingdoc/test/node_modules/node-keyboard/package.json
+68 info preinstall node-keyboard@0.0.0
+69 verbose readDependencies loading dependencies from /home/pi/livingdoc/test/node_modules/node-keyboard/package.json
+70 silly prepareForInstallMany adding ref@~0.1.3 from node-keyboard dependencies
+71 verbose readDependencies loading dependencies from /home/pi/livingdoc/test/node_modules/node-keyboard/package.json
+72 silly cache add args [ 'ref@~0.1.3', null ]
+73 verbose cache add spec ref@~0.1.3
+74 silly cache add parsed spec Result {
+74 silly cache add   raw: 'ref@~0.1.3',
+74 silly cache add   scope: null,
+74 silly cache add   name: 'ref',
+74 silly cache add   rawSpec: '~0.1.3',
+74 silly cache add   spec: '>=0.1.3 <0.2.0',
+74 silly cache add   type: 'range' }
+75 silly addNamed ref@>=0.1.3 <0.2.0
+76 verbose addNamed ">=0.1.3 <0.2.0" is a valid semver range for ref
+77 silly addNameRange { name: 'ref', range: '>=0.1.3 <0.2.0', hasData: false }
+78 silly mapToRegistry name ref
+79 silly mapToRegistry using default registry
+80 silly mapToRegistry registry https://registry.npmjs.org/
+81 silly mapToRegistry data Result {
+81 silly mapToRegistry   raw: 'ref',
+81 silly mapToRegistry   scope: null,
+81 silly mapToRegistry   name: 'ref',
+81 silly mapToRegistry   rawSpec: '',
+81 silly mapToRegistry   spec: 'latest',
+81 silly mapToRegistry   type: 'tag' }
+82 silly mapToRegistry uri https://registry.npmjs.org/ref
+83 verbose addNameRange registry:https://registry.npmjs.org/ref not in flight; fetching
+84 verbose request uri https://registry.npmjs.org/ref
+85 verbose request no auth needed
+86 info attempt registry request try #1 at 11:30:21 AM
+87 verbose request id fea5a731f780334b
+88 http request GET https://registry.npmjs.org/ref
+89 http 200 https://registry.npmjs.org/ref
+90 verbose headers { server: 'nginx/1.10.1',
+90 verbose headers   'content-type': 'application/json',
+90 verbose headers   'last-modified': 'Tue, 29 Aug 2017 16:36:18 GMT',
+90 verbose headers   etag: 'W/"59a59802-f8c3"',
+90 verbose headers   'content-encoding': 'gzip',
+90 verbose headers   'cache-control': 'max-age=300',
+90 verbose headers   'content-length': '7867',
+90 verbose headers   'accept-ranges': 'bytes',
+90 verbose headers   date: 'Tue, 10 Oct 2017 11:30:21 GMT',
+90 verbose headers   via: '1.1 varnish',
+90 verbose headers   age: '0',
+90 verbose headers   connection: 'keep-alive',
+90 verbose headers   'x-served-by': 'cache-bma7033-BMA',
+90 verbose headers   'x-cache': 'HIT',
+90 verbose headers   'x-cache-hits': '1',
+90 verbose headers   'x-timer': 'S1507635022.790054,VS0,VE36',
+90 verbose headers   vary: 'Accept-Encoding, Accept' }
+91 silly get cb [ 200,
+91 silly get   { server: 'nginx/1.10.1',
+91 silly get     'content-type': 'application/json',
+91 silly get     'last-modified': 'Tue, 29 Aug 2017 16:36:18 GMT',
+91 silly get     etag: 'W/"59a59802-f8c3"',
+91 silly get     'content-encoding': 'gzip',
+91 silly get     'cache-control': 'max-age=300',
+91 silly get     'content-length': '7867',
+91 silly get     'accept-ranges': 'bytes',
+91 silly get     date: 'Tue, 10 Oct 2017 11:30:21 GMT',
+91 silly get     via: '1.1 varnish',
+91 silly get     age: '0',
+91 silly get     connection: 'keep-alive',
+91 silly get     'x-served-by': 'cache-bma7033-BMA',
+91 silly get     'x-cache': 'HIT',
+91 silly get     'x-cache-hits': '1',
+91 silly get     'x-timer': 'S1507635022.790054,VS0,VE36',
+91 silly get     vary: 'Accept-Encoding, Accept' } ]
+92 verbose get saving ref to /home/pi/.npm/registry.npmjs.org/ref/.cache.json
+93 verbose correctMkdir /home/pi/.npm correctMkdir not in flight; initializing
+94 silly addNameRange number 2 { name: 'ref', range: '>=0.1.3 <0.2.0', hasData: true }
+95 silly addNameRange versions [ 'ref',
+95 silly addNameRange   [ '0.0.1',
+95 silly addNameRange     '0.0.2',
+95 silly addNameRange     '0.0.3',
+95 silly addNameRange     '0.0.4',
+95 silly addNameRange     '0.0.5',
+95 silly addNameRange     '0.0.6',
+95 silly addNameRange     '0.0.7',
+95 silly addNameRange     '0.0.8',
+95 silly addNameRange     '0.0.9',
+95 silly addNameRange     '0.0.10',
+95 silly addNameRange     '0.0.11',
+95 silly addNameRange     '0.0.12',
+95 silly addNameRange     '0.0.13',
+95 silly addNameRange     '0.0.14',
+95 silly addNameRange     '0.0.15',
+95 silly addNameRange     '0.0.16',
+95 silly addNameRange     '0.0.17',
+95 silly addNameRange     '0.0.18',
+95 silly addNameRange     '0.0.19',
+95 silly addNameRange     '0.0.20',
+95 silly addNameRange     '0.1.0',
+95 silly addNameRange     '0.1.1',
+95 silly addNameRange     '0.1.2',
+95 silly addNameRange     '0.1.3',
+95 silly addNameRange     '0.2.0',
+95 silly addNameRange     '0.2.1',
+95 silly addNameRange     '0.2.2',
+95 silly addNameRange     '0.2.3',
+95 silly addNameRange     '0.3.0',
+95 silly addNameRange     '0.3.1',
+95 silly addNameRange     '0.3.2',
+95 silly addNameRange     '0.3.3',
+95 silly addNameRange     '0.3.4',
+95 silly addNameRange     '0.3.5',
+95 silly addNameRange     '1.0.0',
+95 silly addNameRange     '1.0.1',
+95 silly addNameRange     '1.0.2',
+95 silly addNameRange     '1.1.0',
+95 silly addNameRange     '1.1.1',
+95 silly addNameRange     '1.1.2',
+95 silly addNameRange     '1.1.3',
+95 silly addNameRange     '1.2.0',
+95 silly addNameRange     '1.3.0',
+95 silly addNameRange     '1.3.1',
+95 silly addNameRange     '1.3.2',
+95 silly addNameRange     '1.3.3',
+95 silly addNameRange     '1.3.4',
+95 silly addNameRange     '1.3.5' ] ]
+96 silly addNamed ref@0.1.3
+97 verbose addNamed "0.1.3" is a plain semver version for ref
+98 silly mapToRegistry name ref
+99 silly mapToRegistry using default registry
+100 silly mapToRegistry registry https://registry.npmjs.org/
+101 silly mapToRegistry data Result {
+101 silly mapToRegistry   raw: 'ref',
+101 silly mapToRegistry   scope: null,
+101 silly mapToRegistry   name: 'ref',
+101 silly mapToRegistry   rawSpec: '',
+101 silly mapToRegistry   spec: 'latest',
+101 silly mapToRegistry   type: 'tag' }
+102 silly mapToRegistry uri https://registry.npmjs.org/ref
+103 verbose addRemoteTarball https://registry.npmjs.org/ref/-/ref-0.1.3.tgz not in flight; adding
+104 verbose addRemoteTarball [ 'https://registry.npmjs.org/ref/-/ref-0.1.3.tgz',
+104 verbose addRemoteTarball   'ad268e2e393aa02b89cba655aca6d2c506743faa' ]
+105 info retry fetch attempt 1 at 11:30:22 AM
+106 info attempt registry request try #1 at 11:30:22 AM
+107 http fetch GET https://registry.npmjs.org/ref/-/ref-0.1.3.tgz
+108 http fetch 200 https://registry.npmjs.org/ref/-/ref-0.1.3.tgz
+109 silly fetchAndShaCheck shasum ad268e2e393aa02b89cba655aca6d2c506743faa
+110 verbose addTmpTarball /tmp/npm-11033-34ee6a29/registry.npmjs.org/ref/-/ref-0.1.3.tgz not in flight; adding
+111 verbose addTmpTarball already have metadata; skipping unpack for ref@0.1.3
+112 verbose correctMkdir /home/pi/.npm correctMkdir not in flight; initializing
+113 silly cache afterAdd ref@0.1.3
+114 verbose afterAdd /home/pi/.npm/ref/0.1.3/package/package.json not in flight; writing
+115 verbose correctMkdir /home/pi/.npm correctMkdir not in flight; initializing
+116 verbose afterAdd /home/pi/.npm/ref/0.1.3/package/package.json written
+117 silly install resolved [ { name: 'ref',
+117 silly install resolved     description: 'Turn Buffer instances into "pointers"',
+117 silly install resolved     keywords:
+117 silly install resolved      [ 'native',
+117 silly install resolved        'buffer',
+117 silly install resolved        'extensions',
+117 silly install resolved        'c++',
+117 silly install resolved        'pointer',
+117 silly install resolved        'reference',
+117 silly install resolved        'dereference',
+117 silly install resolved        'type',
+117 silly install resolved        'int',
+117 silly install resolved        'long',
+117 silly install resolved        'float',
+117 silly install resolved        'double',
+117 silly install resolved        'byte',
+117 silly install resolved        '64' ],
+117 silly install resolved     version: '0.1.3',
+117 silly install resolved     author:
+117 silly install resolved      { name: 'Nathan Rajlich',
+117 silly install resolved        email: 'nathan@tootallnate.net',
+117 silly install resolved        url: 'http://tootallnate.net' },
+117 silly install resolved     repository: { type: 'git', url: 'git://github.com/TooTallNate/ref.git' },
+117 silly install resolved     main: './lib/ref.js',
+117 silly install resolved     scripts:
+117 silly install resolved      { docs: 'node docs/compile',
+117 silly install resolved        test: 'mocha -gc --reporter spec',
+117 silly install resolved        install: 'node-gyp rebuild' },
+117 silly install resolved     dependencies: { bindings: '*', debug: '*' },
+117 silly install resolved     devDependencies:
+117 silly install resolved      { dox: '*',
+117 silly install resolved        'highlight.js': '1',
+117 silly install resolved        jade: '*',
+117 silly install resolved        marked: '*',
+117 silly install resolved        mocha: '*',
+117 silly install resolved        weak: '*' },
+117 silly install resolved     engines: { node: '*' },
+117 silly install resolved     gypfile: true,
+117 silly install resolved     _id: 'ref@0.1.3',
+117 silly install resolved     dist:
+117 silly install resolved      { shasum: 'ad268e2e393aa02b89cba655aca6d2c506743faa',
+117 silly install resolved        tarball: 'https://registry.npmjs.org/ref/-/ref-0.1.3.tgz' },
+117 silly install resolved     _npmVersion: '1.1.62',
+117 silly install resolved     _npmUser: { name: 'tootallnate', email: 'nathan@tootallnate.net' },
+117 silly install resolved     maintainers: [ [Object] ],
+117 silly install resolved     directories: {},
+117 silly install resolved     _shasum: 'ad268e2e393aa02b89cba655aca6d2c506743faa',
+117 silly install resolved     _resolved: 'https://registry.npmjs.org/ref/-/ref-0.1.3.tgz',
+117 silly install resolved     _from: 'ref@>=0.1.3 <0.2.0' } ]
+118 info install ref@0.1.3 into /home/pi/livingdoc/test/node_modules/node-keyboard
+119 info installOne ref@0.1.3
+120 verbose installOne of ref to /home/pi/livingdoc/test/node_modules/node-keyboard not in flight; installing
+121 verbose correctMkdir /home/pi/.npm/_locks correctMkdir not in flight; initializing
+122 verbose lock using /home/pi/.npm/_locks/ref-7e608b5031f816d2.lock for /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref
+123 silly install write writing ref 0.1.3 to /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref
+124 verbose unbuild node_modules/node-keyboard/node_modules/ref
+125 silly gentlyRm /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref is being purged from base /home/pi/livingdoc/test
+126 verbose gentlyRm don't care about contents; nuking /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref
+127 verbose tar unpack /home/pi/.npm/ref/0.1.3/package.tgz
+128 verbose tar unpacking to /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref
+129 silly gentlyRm /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref is being purged
+130 verbose gentlyRm don't care about contents; nuking /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref
+131 silly gunzTarPerm modes [ '755', '644' ]
+132 silly gunzTarPerm extractEntry package.json
+133 silly gunzTarPerm extractEntry .npmignore
+134 silly gunzTarPerm extractEntry README.md
+135 silly gunzTarPerm extractEntry .travis.yml
+136 silly gunzTarPerm extractEntry binding.gyp
+137 silly gunzTarPerm extractEntry docs/compile.js
+138 silly gunzTarPerm extractEntry docs/gh-pages.sh
+139 silly gunzTarPerm extractEntry docs/images/apple-touch-icon-114x114.png
+140 silly gunzTarPerm extractEntry docs/images/apple-touch-icon-72x72.png
+141 silly gunzTarPerm extractEntry docs/images/apple-touch-icon.png
+142 silly gunzTarPerm extractEntry docs/images/favicon.ico
+143 silly gunzTarPerm extractEntry docs/images/ref.pxm
+144 silly gunzTarPerm extractEntry docs/index.jade
+145 silly gunzTarPerm extractEntry docs/scripts/jquery-1.7.2.min.js
+146 silly gunzTarPerm extractEntry docs/scripts/main.js
+147 silly gunzTarPerm extractEntry docs/stylesheets/base.css
+148 silly gunzTarPerm extractEntry docs/stylesheets/layout.css
+149 silly gunzTarPerm extractEntry docs/stylesheets/skeleton.css
+150 silly gunzTarPerm extractEntry History.md
+151 silly gunzTarPerm extractEntry lib/ref.js
+152 silly gunzTarPerm extractEntry src/binding.cc
+153 silly gunzTarPerm extractEntry test/address.js
+154 silly gunzTarPerm extractEntry test/char.js
+155 silly gunzTarPerm extractEntry test/coerce.js
+156 silly gunzTarPerm extractEntry test/int64.js
+157 silly gunzTarPerm extractEntry test/bool.js
+158 silly gunzTarPerm extractEntry test/object.js
+159 silly gunzTarPerm extractEntry test/pointer.js
+160 silly gunzTarPerm extractEntry test/ref-deref.js
+161 silly gunzTarPerm extractEntry test/reinterpret.js
+162 silly gunzTarPerm extractEntry test/string.js
+163 silly gunzTarPerm extractEntry test/alloc.js
+164 silly gunzTarPerm extractEntry test/types.js
+165 silly gunzTarPerm extractEntry test/isNull.js
+166 verbose write writing to /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref/package.json
+167 info preinstall ref@0.1.3
+168 verbose readDependencies loading dependencies from /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref/package.json
+169 silly prepareForInstallMany adding bindings@* from ref dependencies
+170 verbose readDependencies loading dependencies from /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref/package.json
+171 silly cache add args [ 'bindings@*', null ]
+172 verbose cache add spec bindings@*
+173 silly cache add parsed spec Result {
+173 silly cache add   raw: 'bindings@*',
+173 silly cache add   scope: null,
+173 silly cache add   name: 'bindings',
+173 silly cache add   rawSpec: '*',
+173 silly cache add   spec: '*',
+173 silly cache add   type: 'range' }
+174 silly addNamed bindings@*
+175 verbose addNamed "*" is a valid semver range for bindings
+176 silly addNameRange { name: 'bindings', range: '*', hasData: false }
+177 silly mapToRegistry name bindings
+178 silly mapToRegistry using default registry
+179 silly mapToRegistry registry https://registry.npmjs.org/
+180 silly mapToRegistry data Result {
+180 silly mapToRegistry   raw: 'bindings',
+180 silly mapToRegistry   scope: null,
+180 silly mapToRegistry   name: 'bindings',
+180 silly mapToRegistry   rawSpec: '',
+180 silly mapToRegistry   spec: 'latest',
+180 silly mapToRegistry   type: 'tag' }
+181 silly mapToRegistry uri https://registry.npmjs.org/bindings
+182 verbose addNameRange registry:https://registry.npmjs.org/bindings not in flight; fetching
+183 verbose request uri https://registry.npmjs.org/bindings
+184 verbose request no auth needed
+185 info attempt registry request try #1 at 11:30:24 AM
+186 http request GET https://registry.npmjs.org/bindings
+187 http 200 https://registry.npmjs.org/bindings
+188 verbose headers { server: 'nginx/1.10.1',
+188 verbose headers   'content-type': 'application/json',
+188 verbose headers   'last-modified': 'Fri, 08 Sep 2017 12:19:32 GMT',
+188 verbose headers   etag: 'W/"59b28ad4-4c18"',
+188 verbose headers   'content-encoding': 'gzip',
+188 verbose headers   'cache-control': 'max-age=300',
+188 verbose headers   'content-length': '3855',
+188 verbose headers   'accept-ranges': 'bytes',
+188 verbose headers   date: 'Tue, 10 Oct 2017 11:30:24 GMT',
+188 verbose headers   via: '1.1 varnish',
+188 verbose headers   age: '18',
+188 verbose headers   connection: 'keep-alive',
+188 verbose headers   'x-served-by': 'cache-bma7033-BMA',
+188 verbose headers   'x-cache': 'HIT',
+188 verbose headers   'x-cache-hits': '1',
+188 verbose headers   'x-timer': 'S1507635024.316412,VS0,VE0',
+188 verbose headers   vary: 'Accept-Encoding, Accept' }
+189 silly get cb [ 200,
+189 silly get   { server: 'nginx/1.10.1',
+189 silly get     'content-type': 'application/json',
+189 silly get     'last-modified': 'Fri, 08 Sep 2017 12:19:32 GMT',
+189 silly get     etag: 'W/"59b28ad4-4c18"',
+189 silly get     'content-encoding': 'gzip',
+189 silly get     'cache-control': 'max-age=300',
+189 silly get     'content-length': '3855',
+189 silly get     'accept-ranges': 'bytes',
+189 silly get     date: 'Tue, 10 Oct 2017 11:30:24 GMT',
+189 silly get     via: '1.1 varnish',
+189 silly get     age: '18',
+189 silly get     connection: 'keep-alive',
+189 silly get     'x-served-by': 'cache-bma7033-BMA',
+189 silly get     'x-cache': 'HIT',
+189 silly get     'x-cache-hits': '1',
+189 silly get     'x-timer': 'S1507635024.316412,VS0,VE0',
+189 silly get     vary: 'Accept-Encoding, Accept' } ]
+190 verbose get saving bindings to /home/pi/.npm/registry.npmjs.org/bindings/.cache.json
+191 verbose correctMkdir /home/pi/.npm correctMkdir not in flight; initializing
+192 silly addNameRange number 2 { name: 'bindings', range: '*', hasData: true }
+193 silly addNameRange versions [ 'bindings',
+193 silly addNameRange   [ '0.0.1',
+193 silly addNameRange     '0.1.0',
+193 silly addNameRange     '0.1.1',
+193 silly addNameRange     '0.2.0',
+193 silly addNameRange     '0.2.1',
+193 silly addNameRange     '0.2.2',
+193 silly addNameRange     '0.2.3',
+193 silly addNameRange     '0.2.4',
+193 silly addNameRange     '0.3.0',
+193 silly addNameRange     '0.4.0',
+193 silly addNameRange     '1.0.0',
+193 silly addNameRange     '1.1.0',
+193 silly addNameRange     '1.1.1',
+193 silly addNameRange     '1.2.0',
+193 silly addNameRange     '1.2.1',
+193 silly addNameRange     '1.3.0' ] ]
+194 silly addNamed bindings@1.3.0
+195 verbose addNamed "1.3.0" is a plain semver version for bindings
+196 silly mapToRegistry name bindings
+197 silly mapToRegistry using default registry
+198 silly mapToRegistry registry https://registry.npmjs.org/
+199 silly mapToRegistry data Result {
+199 silly mapToRegistry   raw: 'bindings',
+199 silly mapToRegistry   scope: null,
+199 silly mapToRegistry   name: 'bindings',
+199 silly mapToRegistry   rawSpec: '',
+199 silly mapToRegistry   spec: 'latest',
+199 silly mapToRegistry   type: 'tag' }
+200 silly mapToRegistry uri https://registry.npmjs.org/bindings
+201 verbose addRemoteTarball https://registry.npmjs.org/bindings/-/bindings-1.3.0.tgz not in flight; adding
+202 verbose addRemoteTarball [ 'https://registry.npmjs.org/bindings/-/bindings-1.3.0.tgz',
+202 verbose addRemoteTarball   'b346f6ecf6a95f5a815c5839fc7cdb22502f1ed7' ]
+203 info retry fetch attempt 1 at 11:30:24 AM
+204 info attempt registry request try #1 at 11:30:24 AM
+205 http fetch GET https://registry.npmjs.org/bindings/-/bindings-1.3.0.tgz
+206 http fetch 200 https://registry.npmjs.org/bindings/-/bindings-1.3.0.tgz
+207 silly fetchAndShaCheck shasum b346f6ecf6a95f5a815c5839fc7cdb22502f1ed7
+208 verbose addTmpTarball /tmp/npm-11033-34ee6a29/registry.npmjs.org/bindings/-/bindings-1.3.0.tgz not in flight; adding
+209 verbose addTmpTarball already have metadata; skipping unpack for bindings@1.3.0
+210 verbose correctMkdir /home/pi/.npm correctMkdir not in flight; initializing
+211 silly cache afterAdd bindings@1.3.0
+212 verbose afterAdd /home/pi/.npm/bindings/1.3.0/package/package.json not in flight; writing
+213 verbose correctMkdir /home/pi/.npm correctMkdir not in flight; initializing
+214 verbose afterAdd /home/pi/.npm/bindings/1.3.0/package/package.json written
+215 silly install resolved [ { name: 'bindings',
+215 silly install resolved     description: 'Helper module for loading your native module\'s .node file',
+215 silly install resolved     keywords: [ 'native', 'addon', 'bindings', 'gyp', 'waf', 'c', 'c++' ],
+215 silly install resolved     version: '1.3.0',
+215 silly install resolved     author:
+215 silly install resolved      { name: 'Nathan Rajlich',
+215 silly install resolved        email: 'nathan@tootallnate.net',
+215 silly install resolved        url: 'http://tootallnate.net' },
+215 silly install resolved     repository:
+215 silly install resolved      { type: 'git',
+215 silly install resolved        url: 'git://github.com/TooTallNate/node-bindings.git' },
+215 silly install resolved     main: './bindings.js',
+215 silly install resolved     bugs: { url: 'https://github.com/TooTallNate/node-bindings/issues' },
+215 silly install resolved     homepage: 'https://github.com/TooTallNate/node-bindings',
+215 silly install resolved     license: 'MIT',
+215 silly install resolved     gitHead: '7fd065ee85386ad3d074d2506e03abe8f9b1588b',
+215 silly install resolved     _id: 'bindings@1.3.0',
+215 silly install resolved     _npmVersion: '5.0.3',
+215 silly install resolved     _nodeVersion: '8.1.3',
+215 silly install resolved     _npmUser: { name: 'tootallnate', email: 'nathan@tootallnate.net' },
+215 silly install resolved     dist:
+215 silly install resolved      { integrity: 'sha512-DpLh5EzMR2kzvX1KIlVC0VkC3iZtHKTgdtZ0a3pglBZdaQFjt5S9g9xd1lE+YvXyfd6mtCeRnrUfOLYiTMlNSw==',
+215 silly install resolved        shasum: 'b346f6ecf6a95f5a815c5839fc7cdb22502f1ed7',
+215 silly install resolved        tarball: 'https://registry.npmjs.org/bindings/-/bindings-1.3.0.tgz' },
+215 silly install resolved     maintainers: [ [Object] ],
+215 silly install resolved     _npmOperationalInternal:
+215 silly install resolved      { host: 's3://npm-registry-packages',
+215 silly install resolved        tmp: 'tmp/bindings-1.3.0.tgz_1500923768710_0.3334669852629304' },
+215 silly install resolved     directories: {},
+215 silly install resolved     _shasum: 'b346f6ecf6a95f5a815c5839fc7cdb22502f1ed7',
+215 silly install resolved     _resolved: 'https://registry.npmjs.org/bindings/-/bindings-1.3.0.tgz',
+215 silly install resolved     _from: 'bindings@*' } ]
+216 info install bindings@1.3.0 into /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref
+217 info installOne bindings@1.3.0
+218 verbose installOne of bindings to /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref not in flight; installing
+219 verbose correctMkdir /home/pi/.npm/_locks correctMkdir not in flight; initializing
+220 verbose lock using /home/pi/.npm/_locks/bindings-909deca3f2f83eef.lock for /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref/node_modules/bindings
+221 silly install write writing bindings 1.3.0 to /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref/node_modules/bindings
+222 verbose unbuild node_modules/node-keyboard/node_modules/ref/node_modules/bindings
+223 silly gentlyRm /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref/node_modules/bindings is being purged from base /home/pi/livingdoc/test
+224 verbose gentlyRm don't care about contents; nuking /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref/node_modules/bindings
+225 verbose tar unpack /home/pi/.npm/bindings/1.3.0/package.tgz
+226 verbose tar unpacking to /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref/node_modules/bindings
+227 silly gentlyRm /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref/node_modules/bindings is being purged
+228 verbose gentlyRm don't care about contents; nuking /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref/node_modules/bindings
+229 silly gunzTarPerm modes [ '755', '644' ]
+230 silly gunzTarPerm extractEntry package.json
+231 silly gunzTarPerm extractEntry README.md
+232 silly gunzTarPerm extractEntry bindings.js
+233 verbose write writing to /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref/node_modules/bindings/package.json
+234 info preinstall bindings@1.3.0
+235 verbose readDependencies loading dependencies from /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref/node_modules/bindings/package.json
+236 verbose readDependencies loading dependencies from /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref/node_modules/bindings/package.json
+237 silly install resolved []
+238 verbose about to build /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref/node_modules/bindings
+239 info build /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref/node_modules/bindings
+240 info linkStuff bindings@1.3.0
+241 silly linkStuff bindings@1.3.0 has /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref/node_modules as its parent node_modules
+242 verbose linkBins bindings@1.3.0
+243 verbose linkMans bindings@1.3.0
+244 verbose rebuildBundles bindings@1.3.0
+245 info install bindings@1.3.0
+246 info postinstall bindings@1.3.0
+247 verbose unlock done using /home/pi/.npm/_locks/bindings-909deca3f2f83eef.lock for /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref/node_modules/bindings
+248 verbose about to build /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref
+249 info build /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref
+250 info linkStuff ref@0.1.3
+251 silly linkStuff ref@0.1.3 has /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules as its parent node_modules
+252 verbose linkBins ref@0.1.3
+253 verbose linkMans ref@0.1.3
+254 verbose rebuildBundles ref@0.1.3
+255 verbose rebuildBundles [ 'bindings' ]
+256 info install ref@0.1.3
+257 verbose unsafe-perm in lifecycle true
+258 info ref@0.1.3 Failed to exec install script
+259 verbose unlock done using /home/pi/.npm/_locks/ref-7e608b5031f816d2.lock for /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref
+260 verbose about to build /home/pi/livingdoc/test/node_modules/node-keyboard
+261 verbose unlock done using /home/pi/.npm/_locks/node-keyboard-00f0ef0b06206974.lock for /home/pi/livingdoc/test/node_modules/node-keyboard
+262 verbose stack Error: ref@0.1.3 install: `node-gyp rebuild`
+262 verbose stack Exit status 1
+262 verbose stack     at EventEmitter.<anonymous> (/usr/lib/node_modules/npm/lib/utils/lifecycle.js:217:16)
+262 verbose stack     at emitTwo (events.js:87:13)
+262 verbose stack     at EventEmitter.emit (events.js:172:7)
+262 verbose stack     at ChildProcess.<anonymous> (/usr/lib/node_modules/npm/lib/utils/spawn.js:24:14)
+262 verbose stack     at emitTwo (events.js:87:13)
+262 verbose stack     at ChildProcess.emit (events.js:172:7)
+262 verbose stack     at maybeClose (internal/child_process.js:862:16)
+262 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:222:5)
+263 verbose pkgid ref@0.1.3
+264 verbose cwd /home/pi/livingdoc/test
+265 error Linux 4.9.41-v7+
+266 error argv "/usr/bin/nodejs" "/usr/bin/npm" "install" "git+https://github.com/Bornholm/node-keyboard.git"
+267 error node v4.8.4
+268 error npm  v2.15.11
+269 error code ELIFECYCLE
+270 error ref@0.1.3 install: `node-gyp rebuild`
+270 error Exit status 1
+271 error Failed at the ref@0.1.3 install script 'node-gyp rebuild'.
+271 error This is most likely a problem with the ref package,
+271 error not with npm itself.
+271 error Tell the author that this fails on your system:
+271 error     node-gyp rebuild
+271 error You can get information on how to open an issue for this project with:
+271 error     npm bugs ref
+271 error Or if that isn't available, you can get their info via:
+271 error
+271 error     npm owner ls ref
+271 error There is likely additional logging output above.
+272 verbose exit [ 1, true ]
+273 verbose unbuild node_modules/node-keyboard/node_modules/ref
+274 info preuninstall ref@0.1.3
+275 info uninstall ref@0.1.3
+276 verbose unbuild rmStuff ref@0.1.3 from /home/pi/livingdoc/test/node_modules
+277 verbose unbuild rmStuff in /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules
+278 info postuninstall ref@0.1.3
+279 silly gentlyRm /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref is being purged from base /home/pi/livingdoc/test
+280 verbose gentlyRm don't care about contents; nuking /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref
+281 silly vacuum-fs purging /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules/ref
+282 silly vacuum-fs removing /home/pi/livingdoc/test/node_modules/node-keyboard/node_modules
+283 silly vacuum-fs quitting because other entries in /home/pi/livingdoc/test/node_modules/node-keyboard
+284 verbose unbuild node_modules/node-keyboard
+285 info preuninstall node-keyboard@0.0.0
+286 info uninstall node-keyboard@0.0.0
+287 verbose unbuild rmStuff node-keyboard@0.0.0 from /home/pi/livingdoc/test/node_modules
+288 info postuninstall node-keyboard@0.0.0
+289 silly gentlyRm /home/pi/livingdoc/test/node_modules/node-keyboard is being purged from base /home/pi/livingdoc/test
+290 verbose gentlyRm don't care about contents; nuking /home/pi/livingdoc/test/node_modules/node-keyboard
+291 silly vacuum-fs purging /home/pi/livingdoc/test/node_modules/node-keyboard
+292 silly vacuum-fs quitting because other entries in /home/pi/livingdoc/test/node_modules

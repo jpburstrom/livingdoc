@@ -1,0 +1,12 @@
+<h1>{{title}}</h1>
+<p>Welcome to {{title}}</p>
+
+<ul>
+{{#each services}}
+<li><strong>{{description}}</strong> is <em>{{status}}</em>. 
+<a href="?action=enable&service={{name}}">Enable</a>
+<a href="?action=disable&service={{name}}">Disable</a>
+</li>
+
+{{/each}}
+</ul>
