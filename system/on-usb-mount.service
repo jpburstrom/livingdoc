@@ -1,0 +1,14 @@
+#Install at /etc/systemd/system/on-usb-mount.service
+#-> sudo systemctl enable on-usb-mount
+[Unit]
+Description=Run script on usb mount
+Requires=media-usbhd.mount
+After=media-usbhd.mount
+
+[Service]
+ExecStart=/home/pi/th/on-usbdrive.sh
+WorkingDirectory=/home/pi/th/
+Restart=on-failure
+
+[Install]
+WantedBy=media-usbhd.mount

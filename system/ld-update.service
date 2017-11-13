@@ -1,0 +1,13 @@
+[Unit]
+Description=Update scripts
+Wants=network-online.target
+After=network.target network-online.target
+
+
+[Service]
+Type=simple
+ExecStart=/home/pi/livingdoc/scripts/update.sh
+WorkingDirectory=/home/pi/livingdoc/
+
+[Install]
+WantedBy=multi-user.target

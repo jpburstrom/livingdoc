@@ -1,0 +1,12 @@
+[Unit]
+Description=Autostart script
+DefaultDependencies=false
+
+[Service]
+Type=simple
+ExecStart=/home/pi/livingdoc/autoplay
+WorkingDirectory=/home/pi/livingdoc/
+Restart=on-failure
+
+[Install]
+WantedBy=local-fs.target
