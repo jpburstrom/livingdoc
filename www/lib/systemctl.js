@@ -30,6 +30,14 @@ exports.getServices = function() {
     })
 };
 
+exports.restart = function(service) {
+    spawnSync("/bin/systemctl", ["restart", service]);
+}
+
+exports.stop = function(service) {
+    spawnSync("/bin/systemctl", ["stop", service]);
+}
+
 
 exports.setEnabled = function (service, enabled) {
     let verb = "enable";

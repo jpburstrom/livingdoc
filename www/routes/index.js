@@ -11,6 +11,12 @@ router.get('/', function(req, res, next) {
     } else if (req.query.action == "disable") {
         systemctl.setEnabled(req.query.service, false);
         return res.redirect("/");
+    } else if (req.query.action == "restart") {
+        systemctl.restart(req.query.service);
+        return res.redirect("/");
+    } else if (req.query.actino == "stop") {
+        systemctl.stop(req.query.service);
+        return res.redirect("/");
     };
     systemctl.getServices().then((result) => {
       res.render('index', { 
@@ -20,12 +26,5 @@ router.get('/', function(req, res, next) {
     });
 });
 
-
-router.get('/keyboard', function(req, res) {
-    fs.readFile("/tmp/shell-output", "utf8", function(error, data) {
-
-        res.send('<meta http-equiv="refresh" content="5"><pre>' + data);
-    });
-});
 
 module.exports = router;

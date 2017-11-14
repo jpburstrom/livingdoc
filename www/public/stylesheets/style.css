@@ -6,3 +6,26 @@ body {
 a {
   color: #00B7FF;
 }
+
+ul {
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+li {
+    border-bottom:1px solid gray;
+    line-height:2;
+}
+.enabled .enable,
+.disabled .disable {
+    display:none;
+}
+li span {
+    display:inline-block;
+    min-width:20em;
+}
+
+li a {
+    display:inline-block;
+    min-width:5em;
+}

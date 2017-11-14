@@ -3,9 +3,11 @@
 
 <ul>
 {{#each services}}
-<li><strong>{{description}}</strong> is <em>{{status}}</em>. 
-<a href="?action=enable&service={{name}}">Enable</a>
-<a href="?action=disable&service={{name}}">Disable</a>
+<li class="{{status}}"><span><strong>{{description}}</strong> is <em>{{status}}</em>. </span>
+<a class="enable" href="?action=enable&service={{name}}">Enable</a>
+<a class="disable" href="?action=disable&service={{name}}">Disable</a>
+<a href="?action=stop&service={{name}}">Stop</a>
+<a href="?action=restart&service={{name}}">Restart</a>
 </li>
 
 {{/each}}
