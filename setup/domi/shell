@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#Custom shell used to black out screen
+
+setterm cursor off
+clear
+for i in {1..50}; do
+    echo ""
+done
+
+read test

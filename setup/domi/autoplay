@@ -12,7 +12,11 @@ from socket import *
 
 import liblo
 
-RASPIVIDCMD = ["raspivid"]
+ID = gethostname()
+
+RASPIVIDCMD = "/usr/bin/raspivid"
+OMXPLAYER = "/usr/bin/omxplayer"
+MEDIAPATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "media")
 TIMETOWAITFORABORT = 0.5
 
 #class for controlling the running and shutting down of raspivid
@@ -21,7 +25,7 @@ class RaspiVidController(threading.Thread):
         threading.Thread.__init__(self)
 
         #setup the raspivid cmd
-        self.raspividcmd = RASPIVIDCMD
+        self.raspividcmd = [RASPIVIDCMD]
         self.raspividcmd.append("-t")
         self.raspividcmd.append(str(timeout))
         self.raspividcmd.append("-f")
@@ -65,66 +69,111 @@ class RaspiVidController(threading.Thread):
     def stopController(self):
         self.running = False
 
-def start_stream(addr):
-    vidcontrol = RaspiVidController("0", "720", "1080", "25", "1000000")
-    print("Starting raspivid controller")
-    vidcontrol.start()
-    clientsocket = socket(AF_INET, SOCK_STREAM)
-    clientsocket.connect(addr)
-    data = clientsocket.recv(buf)
-    return vidcontrol
+class OscHandler: 
+    def __init__(self, id="raspberry", host=None):
 
-def stop_stream(vidcontrol):
-    clientsocket.close()
-    print "Stopping raspivid controller"
-    vidcontrol.stopController()
-    vidcontrol.join()
-    print "Done"
+        self.id = id
+        self.host = host
+        self.stream_port = 55567
+        self.stream_addr = (self.host, self.stream_port)
+
+        self.buf = 1024
+        self.vidcontrol = None
+        self.clientsocket = None
+        self.videoplayer = None
+
+        self.polltime = 10 #ms
+
+        try:
+            self.server = liblo.Server(1234)
+        except liblo.ServerError, err:
+            print str(err)
+            sys.exit(1)
+        else:
+            self.server.add_method("/camera/start", None, self.cstart)
+            self.server.add_method("/camera/stop", None, self.cstop)
+            self.server.add_method("/video/start", 's', self.vstart)
+            self.server.add_method("/video/stop", 's', self.vstop)
+            self.server.add_method("/ping", None, self.ping)
 
 
 
-#test program
-if __name__ == '__main__':
+    def __del__(self):
+        if self.server:
+            self.server.free()
+        if self.vidcontrol:
+            self._close_camera()
+        if self.videoplayer:
+            self._close_video()
+    
+    def ping(self, path, args, type, addr):
+        if not self.host:
+            self.set_host(addr.hostname)
+        liblo.send(addr, "/pong", self.id)
 
-    global vidcontrol
+    def set_host(self, host):
+        self.host = host
+        self.stream_addr = (self.host, self.stream_port)
+
+
+    def cstart(self, path, args):
+        self.vidcontrol = RaspiVidController("0", "720", "1080", "25", "1000000")
+        print("Starting raspivid controller")
+        self.vidcontrol.start()
+        self.clientsocket = socket(AF_INET, SOCK_STREAM)
+        self.clientsocket.connect(self.addr)
+        data = clientsocket.recv(self.buf)
+
+    def cstop(self, path, args):
+        self._close_camera()
+
+    def vstart(self, path, args):
+        #self.videoplayer = subprocess.Popen(["gst-launch-1.0", "-v", "fdsrc", "!", "h264parse", "!", "rtph264pay", "config-interval=1", "pt=96", "!", "gdppay", "!", "tcpserversink", "host=192.168.1.107", "port=5000"], shell=False, stdin=raspivid.stdout)
+        filename = ".".join([args[0], "mov"])
+        self.videoplayer = subprocess.Popen([OMXPLAYER, os.path.join(MEDIAPATH, filename)], shell=False, stdin=subprocess.PIPE);
+        print "start video"
+
+    def vstop(self, addr):
+        print "stop video"
+        if self.videoplayer:
+            self._close_video()
+
+    def poll(self):
+        self.server.recv(self.polltime)
+
+    def _close_camera(self):
+        self.clientsocket.close()
+        self.vidcontrol.stopController()
+        self.vidcontrol.join()
+        self.vidcontrol = None
+
+    def _close_video(self):
+        self.videoplayer.stdin.write('q')
+        self.videoplayer.stdin.flush()
+
+def get_local_ip():
     s = socket(AF_INET, SOCK_DGRAM)
     s.connect(('8.8.8.8', 1))  # connect() for UDP doesn't send packets
     local_ip_address = s.getsockname()[0]
     print local_ip_address
 
-    host = '192.168.0.2'
-    port = 55567
-    buf = 1024
 
-    try:
-        server = liblo.Server(1234)
-    except liblo.ServerError, err:
-        print str(err)
-        sys.exit()
+#test program
+if __name__ == '__main__':
 
-    def start_callback(path, args):
-        global vidcontrol
-        vidcontrol = start_stream(addr)
+    get_local_ip()
 
-    def stop_callback(path, args):
-        global vidcontrol
-        stop_stream(vidcontrol)
-
-    server.add_method("/start", None, start_callback)
-    server.add_method("/stop", None, stop_callback)
-
-    addr = (host, port)
+    handler = OscHandler(ID)
 
 
     try:
         while (True):
-            server.recv(10)
+            handler.poll();
 
     except KeyboardInterrupt:
         print "Cancelled by KeyboardInterrupt"
-        vidcontrol.stopController()
-        vidcontrol.join()
-        exit()
+        #del handler
+        exit(0)
 
 
 

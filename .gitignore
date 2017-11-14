@@ -1,3 +1,5 @@
 node_modules
 *.mp3
+*.mov
+*.mp4
 *.pyc
