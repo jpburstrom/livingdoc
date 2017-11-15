@@ -1,5 +1,8 @@
 node_modules
 *.mp3
+*.flac
 *.mov
 *.mp4
 *.pyc
+*.log
+.DS_Store
