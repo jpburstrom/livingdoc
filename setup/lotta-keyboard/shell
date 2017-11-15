@@ -128,9 +128,12 @@ def seq_callback(char):
     #Debug printout
     if True:
         sys.stdout.write(char)
-        if ord(char) == 10:
-            for i in range(80):
-                sys.stdout.write('\b');
+        try:
+            if ord(char) == 10:
+                for i in range(80):
+                    sys.stdout.write('\b');
+        except TypeError:
+            pass
         sys.stdout.flush()
 
 def toggle_sequencer(i):
@@ -175,7 +178,7 @@ def wait_for_char(x='', encoding='ascii'):
     # Press esc three times to switch mode
     if not x and ord(input) is 27:
         switcher.count()
-        #quit_switcher.count()
+        quit_switcher.count()
 
         return False
 

@@ -22,7 +22,11 @@ class Printer:
 
     def draw_char(self, char):
         # If return, set offset to new line
-        if ord(char) == 10:
+        try:
+            test = ord(char) == 10
+        except TypeError:
+            test = False
+        if test:
             self.offset[0] += 1
             self.offset[1] = 0
         else:
