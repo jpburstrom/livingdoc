@@ -1,0 +1,11 @@
+#!/bin/bash
+
+WD="$( cd "$(dirname "$0")" ; pwd -P )"
+export LD_LIBRARY_PATH=/usr/local/lib
+
+cd /home/pi/sc
+
+sleep 10
+
+xvfb-run --auto-servernum ./sclang -a -l ./sclang.yaml $WD/init.scd #&> sclang.log
+

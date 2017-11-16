@@ -14,8 +14,7 @@ cd $WD
 python button-osc.py &
 
 cd /home/pi/sc
-/usr/local/bin/jackd -P75 -dalsa -dhw:1 -p1024 -n3 -s &
+/usr/local/bin/jackd -P75 -dalsa -dhw:1 -p1024 -n3 -s 
 
 #echo "" > $WD/sclang.log
- xvfb-run --auto-servernum ./sclang -a -l ./sclang.yaml $WD/init.scd #&> sclang.log
 

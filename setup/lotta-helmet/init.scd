@@ -70,6 +70,12 @@ s.waitForBoot {
     Routine({
         2.wait;
         q.recorder.prep;
+        3.do {
+            Synth(\trigSound, [\out, 0]);
+            0.1.wait;
+            Synth(\trigSound, [\out, 1]);
+            0.1.wait;
+        };
         q.cond.hang;
         inf.do {
             "start recording".postln;
