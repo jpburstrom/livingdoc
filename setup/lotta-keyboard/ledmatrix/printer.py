@@ -8,8 +8,8 @@ class Printer:
     def __init__(self):
         self.font_width = 6
         self.font_height = 10
-        self.max_char_width = 10
-        self.max_char_height = 3
+        self.max_char_width = 9
+        self.max_char_height = 2
         self.matrix = Adafruit_RGBmatrix(32, 2)
         self.fontfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fonts/{0}x{1}.bdf".format(self.font_width, self.font_height))
         self.offset = [0, 0]
@@ -27,8 +27,8 @@ class Printer:
         except TypeError:
             test = False
         if test:
-            self.offset[0] += 1
-            self.offset[1] = 0
+            self.offset[0] = 0
+            self.offset[1] += 1
         else:
             self.matrix.DrawText(self.fontfile, self.offset_x(), self.offset_y(), 0xFF, 0xFF, 0xFF, char)
             self.offset[0] += 1
