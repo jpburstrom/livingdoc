@@ -11,7 +11,7 @@ PIDFILE=/tmp/autoplay_pid
 
 sleep 1
 
-PLAYCMD="/usr/bin/mplayer -ao alsa:device=plughw="
+PLAYCMD="/usr/bin/mplayer -loop 0 -ao alsa:device=plughw="
 touch $PIDFILE
 echo "" > $PIDFILE
 
