@@ -13,7 +13,7 @@ cd `dirname $0`
 #sudo cp 11-automount-usb.rules /etc/udev/rules.d/
 sudo cp ../system/*.service /etc/systemd/system/
 sudo systemctl enable node-server
-sudo apt install python-liblo
+sudo apt install python-liblo console-data
 
 #if [[ "yes" == $(ask_input "Install USB mounting rules?") ]] 
 #then

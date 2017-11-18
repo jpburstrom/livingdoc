@@ -3,10 +3,13 @@
 import sys
 import re
 import string
+import subprocess
 from time import time, sleep
 from threading import Timer
 
 from ledmatrix.printer import Printer
+
+subprocess.call(["loadkeys", "de"])
 
 class _GetchUnix:
     def __init__(self):
