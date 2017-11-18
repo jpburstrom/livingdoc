@@ -9,6 +9,12 @@ from threading import Timer
 
 from ledmatrix.printer import Printer
 
+#This sets the playback rate for the sequencer
+#2 = double speed = faster
+#1 = original speed
+#0.5 = half speed = slower
+PLAYBACK_RATE=3
+
 subprocess.call(["loadkeys", "de"])
 
 class _GetchUnix:
@@ -27,7 +33,7 @@ class _GetchUnix:
         return ch
 
 class CharSequencer: 
-    def __init__(self, callback):
+    def __init__(self, callback, playback_rate=1):
         self.score = []
         self.index = 0
         self.callback = callback
@@ -37,6 +43,7 @@ class CharSequencer:
         self.loop = True
         self.last_event_time = 0
         self.monitor = True
+        self.playback_rate = playback_rate
         
         #Max time for 
         self.max_time = 3
@@ -49,7 +56,6 @@ class CharSequencer:
 
     def play_single(self, char, index):
         if self.stopped or self.recording:
-            print "stopped"
             return
         self.callback(char)
         self.schedule(index + 1)
@@ -65,7 +71,7 @@ class CharSequencer:
             if not self.last_event_time:
                 t = 0
             else:
-                t = min(self.max_time, time() - self.last_event_time); 
+                t = min(self.max_time, (time() - self.last_event_time) / self.playback_rate); 
             self.score.append((t, char))
             self.last_event_time = time()
 
@@ -87,7 +93,7 @@ class CharSequencer:
     #Schedule single event at index
     def schedule(self, index):
         try:
-            self.timer = Timer(self.score[index][0], self.play_single, (self.score[index][1], index)).start()
+            self.timer = Timer(self.score[index][0],  self.play_single, (self.score[index][1], index)).start()
         except IndexError:
             if (self.loop):
                 index = 0
@@ -152,7 +158,7 @@ def do_quit(i):
         sys.exit(0)
 
 getch = _GetchUnix()
-seq = CharSequencer(seq_callback)
+seq = CharSequencer(seq_callback, PLAYBACK_RATE)
 switcher = ModeSwitcher(toggle_sequencer)
 switcher.set_mode(0)
 
