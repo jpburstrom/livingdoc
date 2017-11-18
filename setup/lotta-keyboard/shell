@@ -181,12 +181,12 @@ def wait_for_char(x='', encoding='ascii'):
     # Press esc three times to switch mode
     if not x and ord(input) is 27:
         switcher.count()
-        quit_switcher.count()
+        #quit_switcher.count()
 
         return False
 
     switcher.reset()
-    quit_switcher.reset()
+    #quit_switcher.reset()
     
     x = b''.join([x, input])
     try: 
