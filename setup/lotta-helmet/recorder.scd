@@ -68,6 +68,7 @@
     };
 
     ~prPlay = {
+        ~buf.normalize;
         ~playSynth = (dur: inf, instrument: \ldplayer, latency: [nil], bufnum: ~buf).play;
         ~playTask = Task({
             ~loops = 0;
