@@ -15,8 +15,6 @@ from ledmatrix.printer import Printer
 #0.5 = half speed = slower
 PLAYBACK_RATE=3
 
-subprocess.call(["loadkeys", "de"])
-
 class _GetchUnix:
     def __init__(self):
         import tty, sys
