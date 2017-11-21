@@ -21,8 +21,10 @@ TIMETOWAITFORABORT = 0.5
 
 #class for controlling the running and shutting down of raspivid
 class RaspiVidController(threading.Thread):
-    def __init__(self, timeout, hoehe, breite, framerate, bitrate):
+    def __init__(self, timeout, hoehe, breite, framerate, bitrate, hostname):
         threading.Thread.__init__(self)
+
+        self.hostname = hostname
 
         #setup the raspivid cmd
         self.raspividcmd = [RASPIVIDCMD]
@@ -49,7 +51,8 @@ class RaspiVidController(threading.Thread):
     def run(self):
 
         raspivid = subprocess.Popen(self.raspividcmd, shell=False, stdout=subprocess.PIPE)
-        test = subprocess.Popen(["gst-launch-1.0", "-v", "fdsrc", "!", "h264parse", "!", "rtph264pay", "config-interval=1", "pt=96", "!", "gdppay", "!", "tcpserversink", "host=192.168.1.107", "port=5000"], shell=False, stdin=raspivid.stdout)
+        test = subprocess.Popen(["gst-launch-1.0", "-v", "fdsrc", "!", "h264parse", "!", "rtph264pay", "config-interval=1",
+            "pt=96", "!", "gdppay", "!", "tcpserversink", "".join(["host=", self.hostname]), "port=5000"], shell=False, stdin=raspivid.stdout)
 
         #loop until its set to stopped or it stops
         self.running = True
@@ -76,6 +79,7 @@ class OscHandler:
         self.host = host
         self.stream_port = 55567
         self.stream_addr = (self.host, self.stream_port)
+        self.local_ip = self.get_local_ip()
 
         self.buf = 1024
         self.vidcontrol = None
@@ -117,7 +121,7 @@ class OscHandler:
 
 
     def cstart(self, path, args):
-        self.vidcontrol = RaspiVidController("0", "720", "1080", "25", "1000000")
+        self.vidcontrol = RaspiVidController("0", "720", "1080", "25", "1000000", self.local_ip)
         print("Starting raspivid controller")
         self.vidcontrol.start()
         self.clientsocket = socket(AF_INET, SOCK_STREAM)
@@ -151,17 +155,14 @@ class OscHandler:
         self.videoplayer.stdin.write('q')
         self.videoplayer.stdin.flush()
 
-def get_local_ip():
-    s = socket(AF_INET, SOCK_DGRAM)
-    s.connect(('8.8.8.8', 1))  # connect() for UDP doesn't send packets
-    local_ip_address = s.getsockname()[0]
-    print local_ip_address
+    def get_local_ip(self):
+        s = socket(AF_INET, SOCK_DGRAM)
+        s.connect(('8.8.8.8', 1))  # connect() for UDP doesn't send packets
+        return s.getsockname()[0]
 
 
 #test program
 if __name__ == '__main__':
-
-    get_local_ip()
 
     handler = OscHandler(ID)
 
