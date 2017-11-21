@@ -4,39 +4,7 @@ PLAYCMD=/usr/bin/mplayer
 ROOTDIR=`dirname $0`
 ASSETDIR=$ROOTDIR/media
 
-#Output devices
-SPKR=0.0
-HEAD=(1.0 2.0 3.0)
-PIDFILE=/tmp/autoplay_pid
-
 sleep 1
 
-PLAYCMD="/usr/bin/mplayer -loop 0 -ao alsa:device=plughw="
-touch $PIDFILE
-echo "" > $PIDFILE
-
-headphones() {
-    counter=0;
-    for pid in `cat $PIDFILE`
-    do
-        kill $pid
-    done
-    echo "" > $PIDFILE
-    for file in $ASSETDIR/head*
-    do
-        $PLAYCMD${HEAD[$counter]} $file &
-        echo $! >> $PIDFILE
-        true $((counter++));
-    done
-}
-
-echo "" > /tmp/testfile
-#Speaker file is master file
-#Headphones start at same time
-#When speaker file stops, it restarts again
-while true; do
-    for sprkfile in $ASSETDIR/speaker*.mp3; do
-        headphones
-        $PLAYCMD$SPKR $sprkfile
-    done
-done
+PLAYCMD="/usr/bin/mplayer -channels 8 -loop 0 -ao alsa:device=ttable "
+$PLAYCMD /home/pi/8ch-test.flac
