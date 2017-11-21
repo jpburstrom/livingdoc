@@ -125,7 +125,7 @@ class OscHandler:
         print("Starting raspivid controller")
         self.vidcontrol.start()
         self.clientsocket = socket(AF_INET, SOCK_STREAM)
-        self.clientsocket.connect(self.addr)
+        self.clientsocket.connect(self.stream_addr)
         data = clientsocket.recv(self.buf)
 
     def cstop(self, path, args):
