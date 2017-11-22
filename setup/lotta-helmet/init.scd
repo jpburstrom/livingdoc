@@ -86,8 +86,6 @@ s.waitForBoot {
 
             (q.recorder.duration * 5).wait;
             q.recorder.stop;
-            "waiting for input".postln;
-            q.cond.hang;
             q.players.do(_.free);
             q.players.clear;
             "end of loop".postln;
