@@ -7,4 +7,4 @@ ASSETDIR=$ROOTDIR/media
 sleep 1
 
 PLAYCMD="/usr/bin/mplayer -channels 8 -loop 0 -ao alsa:device=ttable "
-$PLAYCMD /home/pi/8ch-test.flac
+$PLAYCMD $ROOTDIR/media/anna-8ch.flac
