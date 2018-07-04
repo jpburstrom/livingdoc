@@ -1,0 +1,17 @@
+[Unit]
+Description=Send OSC broadcast ping
+#Requires=After=mysql.service       # Requires the mysql service to run first
+
+[Service]
+ExecStart=/usr/bin/env node /home/pi/livingdoc/scripts/oscping/index.js
+Restart=always
+# Restart service after 10 seconds if node service crashes
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=osc-ping
+
+Environment=PORT=57120
+
+[Install]
+WantedBy=multi-user.target
