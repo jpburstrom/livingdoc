@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#Need to do this to run as root
+if [ ! -e /usr/lib/arm-linux-gnueabihf/jack ]; then
+    ln -s /usr/local/lib/jack /usr/lib/arm-linux-gnueabihf/jack
+fi
+export LD_LIBRARY_PATH=/usr/local/lib
+
+#WD="$( cd "$(dirname "$0")" ; pwd -P )"
+JACK_DRIVER_DIR=/usr/local/lib/jack
+
+cd /home/pi/sc
+/usr/local/bin/jackd -P75 -dalsa -dhw:0 -p1024 -n3 -s &
+./scsynth -u 57110 -a 1024 -i 2 -o 2 -b 1026 -R 0 -U plugins:share -C 0 -l 1 &
+sleep 5
+jack_connect SuperCollider:out_1 system:playback_1
+jack_connect SuperCollider:out_2 system:playback_2
+
+wait $1
+
+
+#echo "" > $WD/sclang.log
+
