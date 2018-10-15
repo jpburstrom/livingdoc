@@ -7,6 +7,7 @@ SynthDef(\vibroBox, { |ampBus|
     // amp = Amplitude.kr(snd, 0.01, 0.5).linlin(0.0009,0.1, 0, 1).poll;
 
     amp = RunningSum.rms(snd).linlin(0.001, 0.03, 0, 1);
+    CheckBadValues.kr(amp);
 
     onset = Coyote.kr(snd);
     SendReply.kr(TDelay.kr(onset, 0.01), '/onset', Amplitude.ar(snd, 0.01, 0.01));
@@ -31,6 +32,7 @@ SynthDef(\vibroBox, { |ampBus|
     //Play vibration in box
     // amp.lag(10).poll;
     snd = (10 * amp).min(0.45).max(0.01).lagud(1, 10) * SinOsc.ar(LFNoise2.kr(1).exprange(65, 70)).dup * 2;
+
 
     Out.ar(0, snd);
 
