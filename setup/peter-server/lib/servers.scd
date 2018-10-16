@@ -53,7 +53,8 @@ p = Proto {
 	};
 
 	~asPattern = {
-		Pfunc({ ~servers.choose })
+		//Fallback to internal server
+		Pfunc({ ~servers.choose ?? { Server.internal } })
 	};
 
 	~asStream = {
