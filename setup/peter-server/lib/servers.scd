@@ -2,9 +2,15 @@
 p.free;
 p = Proto {
 
+	//Dummy server to fall back to, if no remotes are available
+	~fallbackServer = Server.internal;
+
+	//Timeout after server is removed from pool
 	~timeout = 4;
 
+	//serverKey->expiryTime
 	~expires = ();
+	//serverKey->server
 	~servers = ();
 
 	~initOSC = {
@@ -16,6 +22,7 @@ p = Proto {
 	};
 
 	~stopUpdates = {
+		"stopping updates".postln;
 		~responder.free;
 		~task.stop;
 	};
@@ -54,7 +61,9 @@ p = Proto {
 
 	~asPattern = {
 		//Fallback to internal server
-		Pfunc({ ~servers.choose ?? { Server.internal } })
+		Pprotect( //Doesn't catch host down error
+			Pfunc({ ~servers.choose ?? { ~fallbackServer } })
+			, { "There was an error".postln });
 	};
 
 	~asStream = {
@@ -64,16 +73,24 @@ p = Proto {
 };
 p.startUpdates
 )
+p.free
 p.servers.do(_.freeAll)
 p.servers['192.168.0.11'].queryAllNodes
-x = Synth(\default, nil, p.servers['192.168.0.11'])
+
 x.free
 (
+SynthDef(\ping, {
+	Out.ar(0, SinOsc.ar(\freq.kr) * \amp.kr * Env.perc.ar(2));
+}).add;
 Pbind(
+	\instrument, \ping,
 	\latency, [nil],
 	\server, p,
-	\note, Pwhite(0,11),
-	\dur, 0.25
+	\degree, Pwhite(0,11),
+	\dur, 0.125
 ).play
 )
 SynthDescLib.default.send(p.servers.values[0])
+
+Pbind(\server, Server.local).play
+s.boot
