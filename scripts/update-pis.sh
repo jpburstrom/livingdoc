@@ -9,7 +9,8 @@ for pi in `arp -a | grep b8:27:eb | grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}
     $rw &&
     cd /home/pi/livingdoc &&
     git pull &&
-    sudo systemctl restart autoplay
+    sudo systemctl restart autoplay &&
+    $ro
 EOF
 done
 
