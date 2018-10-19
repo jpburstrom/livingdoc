@@ -3,6 +3,8 @@
 ~buffers !? (_.freeAll);
 ~buffers = Proto({
 
+	~defaultServer = Server.internal;
+
 	~servers = Set();
 	~bufs = MultiLevelIdentityDictionary();
 	~cache = IdentityDictionary();
@@ -87,6 +89,7 @@
 			});
 		};
 		keys.pop;
+		dir
 	};
 
 	//Accessing
@@ -141,7 +144,7 @@
 			Prout({ |ev|
 				var server, index=0;
 				loop {
-					server = ev.server ?? { Server.default };
+					server = ev.server ?? { ~defaultServer };
 					ev.bufnum = data[server][index];
 					ev.bufdur = ev.bufnum.duration.max(0.001);
 					ev = ev.yield;
@@ -177,10 +180,10 @@ SynthDef(\bufPlayer, {
 	Out.ar(0, snd);
 }).add
 
-Pchain(~buffers.seq(\test, \audio), (instrument: \bufPlayer, amp:1)).trace.play
+Pchain(~buffers.rand(\test), (instrument: \bufPlayer, amp:1)).trace.play
 
 ~buffers.dictAt(\test)
-~buffers.bufs[\test, \audio]
+~buffers.bufs[\test, \audio, \currency]
 ~buffers.listAt(\test, \audio)[Server.local]
 ~buffers.choose(\test).play
 BufEnvir
