@@ -21,6 +21,7 @@ s.waitForBoot {
 		~servers = "lib/servers.scd".resolveRelative.load;
 		~buffers = "lib/buffers.scd".resolveRelative.load;
 		~servers.addDependant(~buffers);
+		~servers.addPermanent(mainServer);
 
 		(~basePath +/+ "synthdefs/*").loadPaths;
 		(~basePath +/+ "patterns/*").loadPaths;

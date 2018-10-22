@@ -202,7 +202,7 @@ Proto({
 			Prout({ |ev|
 				var server, index=0;
 				loop {
-					server = ev.server ?? { ~defaultServer };
+					server = ev.server ?? { Server.default };
 					ev.bufnum = data[server][index];
 					ev.bufdur = ev.bufnum.duration.max(0.001);
 					ev = ev.yield;

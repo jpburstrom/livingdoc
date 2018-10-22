@@ -19,6 +19,19 @@ Proto {
 		}.inEnvir, '/ping').fix;
 	};
 
+	~addPermanent = { |server|
+		var key = server.name.asSymbol;
+		~expires[key] = inf;
+		~servers[key] = server;
+		currentEnvironment.changed(\add, server);
+	};
+
+	~removePermanent = { |server|
+		var key = server.name.asSymbol;
+		~expires[key] = nil;
+		currentEnvironment.changed(\remove, ~servers.removeAt(key));
+	};
+
 	~stopUpdates = {
 		"stopping updates".postln;
 		~responder.free;
@@ -62,7 +75,7 @@ Proto {
 	~asPattern = {
 		//Fallback to internal server
 		Pprotect( //Doesn't catch host down error
-			Pfunc({ ~servers.choose ?? { ~fallbackServer } })
+			Pfunc({ ~servers.choose ?? { ~fallbackServer } }.inEnvir)
 			, { "There was an error".postln });
 	};
 
