@@ -54,6 +54,7 @@ Proto {
 	};
 
 	~free = {
+		currentEnvironment.releaseDependants;
 		~servers.do(_.remove);
 		~stopUpdates.value;
 	};
