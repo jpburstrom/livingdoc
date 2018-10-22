@@ -8,6 +8,7 @@
 	~servers = Set();
 	~bufs = MultiLevelIdentityDictionary();
 	~cache = IdentityDictionary();
+	~history = List(); // history of buffer alloc/read commands
 
 	~methods = (
 	);
@@ -17,11 +18,68 @@
 			"Buffer monster says server % not running".format(server).warn;
 		};
 		~servers.add(server);
-		server.newBufferAllocators;
+		if (~bufs.size > 0) {
+			~validateBuffers.(server, ~mirrorBuffersToServer)
+		};
+	};
+
+	//Validate buffers for server.
+	//Calls ~mirrorBuffersToServer if
+	~validateBuffers = { |server, reallocFunc|
+		var cond = Condition();
+		var continue = true;
+		var validate = { |buf|
+			OSCFunc({ |msg|
+				if (msg[3] == 0) {
+					continue = false;
+				} {
+				};
+				cond.unhang;
+			}.inEnvir, \b_info, server.addr).oneShot;
+			server.sendMsg(\b_query, buf.bufnum);
+		};
+		var bufCache = ~listAt.(server);
+
+		//First test if server has same buffer count
+
+		if (bufCache.isNil or: { bufCache.size != ~history.size }) {
+			reallocFunc.(server);
+		} {
+			//If buffer count is same, check if any buffers are invalid
+			//(which can happen after server reboot)
+			fork {
+				~bufs.leafDo { |path, buf|
+					if (path.last == server) {
+						validate.value(buf);
+						cond.hang;
+					};
+					if (continue.not) {
+						reallocFunc.(server);
+						thisThread.stop;
+					}
+				};
+			}
+		}
+	};
+
+	~mirrorBuffersToServer = { |server|
+		var key, what, args, buffer;
+		Buffer.freeAll(server);
+		server.bind({
+			~history.do { |line|
+				#key, what = line;
+				args = line[2..];
+				buffer = ~prBufAtCreate.(server, key);
+				buffer.perform(what, *args);
+				server.sync;
+				buffer.updateInfo;
+			}
+		}.inEnvir);
+
 	};
 
 	~removeServer = { |server|
-		~servers.remove(server.postln);
+		~servers.remove(server);
 	};
 
 	~clearServers = {
@@ -49,6 +107,7 @@
 
 	~prBufferPerform = { |key, what ...args|
 		var buffer;
+		~history.add([key, what].addAll(args));
 		~servers.do { |server|
 			server.bind {
 				buffer = ~prBufAtCreate.(server, key);
@@ -62,6 +121,7 @@
 
 
 	~freeAll = {
+		~history.clear;
 		~bufs.leafDo({ |path, buf|
 			buf.free;
 		});
