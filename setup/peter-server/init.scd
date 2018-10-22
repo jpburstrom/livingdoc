@@ -1,43 +1,49 @@
 (
+var mainServer = Server.local;
+
 s.options.maxLogins = 8;
 s.waitForBoot {
-    var playSignal = {
-        fork {
-            5.do {
-                { SinOsc.ar * Env.perc.ar(2) }.play;
-                1.wait;
-            }
-        }
-    };
-    q !? { q.do(_.free) };
-    q = ();
-    q.basePath = "/home/pi/livingdoc/setup/peter-server";
-    playSignal.value;
-    120.wait; // BAD STYLE
-    playSignal.value;
-   
+	q = q !? { q.deepDo(5, _.free); q.clear; } ?? ();
+	q.make {
 
-    //Load synthdefs
-    (q.basePath +/+ "synthdefs/*").loadPaths.postln;
-    //Load patterns
-    //(q.basePath +/+ "patterns/*").loadPaths.postln;
+		~basePath = "".resolveRelative;
+		~mainServer = Server.local;
+		~samplePath = {
+			if (~mainServer == Server.local) {
+				~basePath +/+ "samples";
+			} {
+				"Falling back to hardcoded sample directory".warn;
+				"/home/pi/livingdoc/setup/peter-server/samples"
+			}
+		}.value;
 
-    q.ampBus = Bus.control;
-    1.wait;
-    loop {
 
-        q.vibro = Synth(\vibroBox, [\ampBus, q.ampBus]);
-        //Pdef(\peterAmpWarp).play;
+		~servers = "lib/servers.scd".resolveRelative.load;
+		~buffers = "lib/buffers.scd".resolveRelative.load;
+		~servers.addDependant(~buffers);
 
-        (60 * 13).wait;
+		(~basePath +/+ "synthdefs/*").loadPaths;
+		(~basePath +/+ "patterns/*").loadPaths;
 
-        playSignal.value;
-        q.vibro.free;
-        //Pdef(\peterAmpWarp).stop;
+		~buffers.loadDirectory(~samplePath.postln);
 
-        (60 * 2).wait;
+		~buses = (
+			ampBus: Bus.control;
+		);
 
-        playSignal.value;
-    }
+		///XXX currently unused stuff
+		~synths = List();
+		~makeSynth = { |key, def, args|
+			~synths.add(Synth(def, args));
+		}.inEnvir;
+
+
+
+
+	};
+
+	s.sync;
+
+	"score.scd".resolveRelative.load;
 }
 )
