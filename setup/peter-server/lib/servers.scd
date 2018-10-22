@@ -70,26 +70,3 @@ Proto {
 	};
 
 };
-p.startUpdates
-)
-p.free
-p.servers.do(_.freeAll)
-p.servers['192.168.0.11'].queryAllNodes
-
-x.free
-(
-SynthDef(\ping, {
-	Out.ar(0, SinOsc.ar(\freq.kr) * \amp.kr * Env.perc.ar(2));
-}).add;
-Pbind(
-	\instrument, \ping,
-	\latency, [nil],
-	\server, p,
-	\degree, Pwhite(0,11),
-	\dur, 0.125
-).play
-)
-SynthDescLib.default.send(p.servers.values[0])
-
-Pbind(\server, Server.local).play
-s.boot
