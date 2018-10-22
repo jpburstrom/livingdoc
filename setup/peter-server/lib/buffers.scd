@@ -1,7 +1,5 @@
 //Central location for buffers
-(
-~buffers !? (_.freeAll);
-~buffers = Proto({
+Proto({
 
 	~defaultServer = Server.internal;
 
@@ -225,30 +223,14 @@
 		}
 	};
 
-
+	~update = { |obj, what, server|
+		switch(what,
+			\add, {
+				~addServer.(server)
+			},
+			\remove, {
+				~removeServer.(server)
+			}
+		);
+	}
 });
-
-~buffers.addServer(Server.default);
-// ~buffers.removeServer(Server.default);
-// ~buffers.clearServers
-// ~buffers.read([\foo, \fum], "/Users/johannes/lovestory.wav")
-
-~buffers.readDirectory("/Users/johannes/kod/livingdoc-pi/setup/peter-server/samples/");
-)
-SynthDef(\bufPlayer, {
-	var snd = PlayBuf.ar(1, \bufnum.kr(0), BufRateScale.kr(\bufnum.kr), doneAction:2);
-	Out.ar(0, snd);
-}).add
-
-Pchain(~buffers.rand(\test), (instrument: \bufPlayer, amp:1)).trace.play
-
-~buffers.dictAt(\test)
-~buffers.bufs[\test, \audio, \currency]
-~buffers.listAt(\test, \audio)[Server.local]
-~buffers.choose(\test).play
-BufEnvir
-Pbind
-
-~buffers.random.asStream.nextN(5)
-
-PathName("/Users/johannes/kod/livingdoc-pi/setup/peter-server/samples/").endNumberIndex
