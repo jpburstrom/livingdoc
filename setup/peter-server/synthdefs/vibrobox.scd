@@ -34,6 +34,6 @@ SynthDef(\vibroBox, { |ampBus|
     snd = (10 * amp).min(0.45).max(0.01).lagud(1, 10) * SinOsc.ar(LFNoise2.kr(1).exprange(65, 70)).dup * 2;
 
 
-    Out.ar(0, snd);
+	Out.ar(0, snd * Env.asr(1, 1, 5, [4, -4]).ar(2, \gate.kr(1)));
 
 }).add
