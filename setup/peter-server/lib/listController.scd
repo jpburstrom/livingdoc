@@ -2,7 +2,7 @@ var proto = Require("playController") <> {
 	var synth, buf, routs;
 
 	~score = [
-		 Fdef(\createPlayer).({
+		 Fdef(\makeCue).({
 			~name = "test";
 			//~prewait = 2;
 
@@ -40,7 +40,7 @@ var proto = Require("playController") <> {
 				~loadNext.(obj);
 			} {
 				~loaderQueue.add(obj);
-				~children.add(obj);
+				~addChildren.(obj);
 				/*
 				~connections.add(
 					obj.signal(\stopped).connectTo(~children.methodSlot("remove(object.postln)")));
@@ -98,6 +98,8 @@ var proto = Require("playController") <> {
 	});
 
 	~load = { |player|
+		player.addChildren(~score);
+		player.children.debug("children");
 		~loader.play;
 		~loadNext.(~score);
 	};
@@ -133,8 +135,3 @@ Fdef(\makeCueList, { |obj, func|
 	};
 	proto <> func;
 });
-
-z = (proto <> ({ ~score = [Fdef(\makeCue).value { ~play = { "playing".postln }; ~stop = {"stop".postln }}] }));
-z.play
-
-

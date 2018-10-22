@@ -37,8 +37,14 @@ p.player_({
 
 var proto = Proto {
 
+
 	~cond = Condition(false);
 	~playerCond = Condition(false);
+
+	~isCuePlayer = true;
+	~mother = nil;
+	~children = Set();
+
 
 	~playAfterLoad = false;
 
@@ -285,6 +291,36 @@ var proto = Proto {
 		~stop.value;
 		"FREEING PROTO".warn;
 	};
+
+	~addChildren = { |...children|
+		children.flat.do { |child|
+			if (~isSameKind.(child)) {
+				~children.add(child);
+				child.setMother(currentEnvironment);
+			};
+		};
+	};
+
+	~setMother = { |obj|
+		if (~isSameKind.(obj)) {
+			~mother = obj;
+			if (obj.children.includes(currentEnvironment).not) {
+				obj.addChildren(currentEnvironment)
+			}
+		}
+	};
+
+	~siblings = {
+		~mother !? {
+			~mother.children.reject(currentEnvironment);
+		};
+	};
+
+	//A test for mothers/children -- can be overridden
+	~isSameKind = { |obj|
+		obj.tryPerform(\isCuePlayer) == true;
+	};
+
 	currentEnvironment['<>'] = { |func|
 		if (func.isFunction or: func.isKindOf(FunctionList)) {
 			currentEnvironment.make {
@@ -355,7 +391,7 @@ Fdef(\makeCue, { |obj, modFunc|
 			false
 		}
 	}} {
-		func = { ~filename = obj }.addFunc {
+		func = { ~filename = obj }.addFunc { //TODO: pass on number of channels
 
 			~load = {
 				~buffer = Buffer.cueSoundFile(~server, ~filename, 0, 2).postln;
@@ -383,8 +419,14 @@ Fdef(\makeCue, { |obj, modFunc|
 Fdef(\makeTriggerCue, { |func, modFunc|
 	proto.clone <> { ~play = func } <> modFunc;
 });
+/*
+z = Fdef(\makeCue).value("/Users/johannes/lovestory.wav").play;
+z.stop
+z.hardStop
+z.play
+SynthDef(\foo, {
+	Out.ar(0, SinOsc.ar * Env.asr(0.1, 1, 5).ar(2, \gate.kr(1)))
+}).add
 
-z = Fdef(\makeCue).value(Pbind(\dur, 0.5), { ~note = 2; });
-//z.play
-
-
+*/
+proto
