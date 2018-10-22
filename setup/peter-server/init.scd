@@ -26,7 +26,7 @@ s.waitForBoot {
 		(~basePath +/+ "synthdefs/*").loadPaths;
 		(~basePath +/+ "patterns/*").loadPaths;
 
-		~buffers.loadDirectory(~samplePath.postln);
+		~buffers.readDirectory(~samplePath.postln);
 
 		~buses = (
 			ampBus: Bus.control;
