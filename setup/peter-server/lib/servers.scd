@@ -1,6 +1,4 @@
-(
-p.free;
-p = Proto {
+Proto {
 
 	//Dummy server to fall back to, if no remotes are available
 	~fallbackServer = Server.internal;
@@ -39,7 +37,7 @@ p = Proto {
 			~expires.copy.keysValuesDo { |k, time|
 				if (time < SystemClock.seconds) {
 					~expires[k] = nil;
-					~servers.removeAt(k).remove.debug("remove");
+					currentEnvironment.changed(\remove, ~servers.removeAt(k));
 				}
 			};
 
@@ -50,6 +48,7 @@ p = Proto {
 		if (~servers[key].isNil) {
 			~servers[key] = Server.remote(key, NetAddr(hostname, 57110));
 			~servers[key].initTree;
+			currentEnvironment.changed(\add, ~servers[key]);
 		};
 		~expires.put(key, SystemClock.seconds + ~timeout);
 	};
