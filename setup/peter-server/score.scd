@@ -23,7 +23,7 @@ q.make {
 		self.totalTime = 15 * 60;
 		self.remainingTime = self.totalTime;
 		self.startTime = self.clk.beats;
-		self.clk.tempo = 20;
+		self.clk.tempo = 1;
 	};
 
 	//Run a routine posting current time every 5 beats

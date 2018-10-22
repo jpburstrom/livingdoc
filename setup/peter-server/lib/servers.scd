@@ -41,7 +41,6 @@ Proto {
 	~startUpdates = {
 		~initOSC.value;
 		~startTask.value;
-
 	};
 
 	~startTask = {

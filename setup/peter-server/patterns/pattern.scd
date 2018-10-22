@@ -6,8 +6,8 @@ Pdef(\peterAmpWarp, Pbind(
     \startPos, Prand([0.0, 0.35], inf),
     // \startPos, 0.2,
     \clump, 4,
-    \server, Plazy { Pxrand(q.servers, inf) },
-    \bufnum, Pfunc { |ev| q.buffers[ev.server.name].choose },
+    \server, Plazy { Pxrand(q.servers, inf) },
+    \bufnum, Pfunc { |ev| q.buffers[ev.server.name].choose },
     //\freqshift, [0, -50, 100, -2000],
     \amp, Pkey(\clump).reciprocal * p{ var x=0; loop { x = (x * 0.8) + (q.ampBus.getSynchronous * 20); x.yield; }  } ,
     //\amp, 0.5,
@@ -22,3 +22,7 @@ Pdef(\peterAmpWarp, Pbind(
     // \dur, 1,
     \legato, Plprand(0.01, 0.8)
 ));
+
+
+
+)

@@ -38,13 +38,14 @@ s.waitForBoot {
 			~synths.add(Synth(def, args));
 		}.inEnvir;
 
-
-
-
 	};
 
 	s.sync;
 
-	"score.scd".resolveRelative.load;
+	// "score.scd".resolveRelative.load;
 }
 )
+
+{ ReplaceOut.ar(0, In.ar(0, 2).tanh) }.play
+
+
