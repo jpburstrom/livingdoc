@@ -88,17 +88,22 @@ q.make {
 
 
 	~cue = { |self ...args|
+		var cues;
 		"Cueing %".format(args).postln;
 		while { args[0].isSymbol } {
-			self.parts[args.removeAt(0)].value;
+			cues = cues.add(args.removeAt(0));
 		};
-
-		self.spawner.wait(self.calcTime(*args));
+		self.currentDuration = self.calcTime(*args);
+		cues.do { |cue|
+			self.parts[cue].value(self.currentDuration);
+		};
+		self.spawner.wait(self.currentDuration);
 	};
 
 	~calcTime = { |self, m, s|
 		((m ? 0) * 60) + (s ? 0)
 	};
+
 
 	//------PART DEFINITIONS GO HERE-------
 
@@ -118,8 +123,35 @@ q.make {
 		endBox: {
 			q.vibro.release;
 		},
-	);
 
+		dance: { |self, dur|
+			///XXX a bit verbose
+			var stream = Routine({
+				var dances = (
+					//Placeholder
+					truthPractice: Pdef(\drone1, Pbind(\octave, 3)),
+					hiphop: Pdef(\dance1),
+					ritual: Pdef(\dance2),
+					smallIsThis: Pdef(\dance3),
+					bigIsThis: Pdef(\drone2, Pbind(\octave, 3))
+				);
+				loop {
+					dances.keys.asArray.scramble.do { |dance|
+						dance.debug("Now playing");
+						dances[dance].yield;
+					}
+				};
+			});
+			{ |dur|
+				var ptn = stream.next;
+				ptn.debug("pattern");
+				//TODO pass on total duration to pattern
+				//TODO fix hardcoded tempo
+				PatternConductor(Pfindur(dur, ptn)).tempo_(68/60).play
+			}
+
+		}.value;
+	);
 	//------------END OF PART DEFINITIONS!!!-----------
 };
 );
@@ -132,22 +164,37 @@ Pspawner({ |sp|
 
 	loop {
 
+		var numDances = 7; //FIXME
+		var totalDanceDuration = 120;
+		var endDuration = 0.rrand(45);
+
+		//durations
+		var dances;
+		var pauses;
+
 
 		q.resetTime;
 
-		q.cue(\startReset, 2);
+		/*
+		q.cue(\startReset, );
 		q.cue(\endReset, \startBox);
 		q.cue(\waitForTrigger);
-		q.triggerWait(2);
-		q.remainingDo([
-			//part, duration factor
-			\part1, 4,
-			\part2, 3,
-			\part3, 1,
-			\part4, 2
-		]);
+		q.triggerWait(0, 30);
+		q.cue(\startBoxPattern);
+		q.cue(\waitForFirstDance, 0, 30);
+		*/
+		//Ar
+		dances = q.func.divideSensibly2(
+			totalDanceDuration, numDances, 15.0).debug("dances");
+		pauses = q.func.divideSensibly2(
+			q.calcRemainingTime - endDuration - totalDanceDuration, numDances, 30).debug("pauses");
+		numDances.do { |i|
+			q.cue(\pause, 0, pauses[i]);
+			q.cue(\dance, 0, dances[i]);
+		};
+		q.cue(\waitForEnd, 0, endDuration);
 		q.cue(\endBox);
-
+		q.calcRemainingTime.debug("REMAINING SHOULD BE 0 AND IS::");
 	}
 
 }).play(q.clk)

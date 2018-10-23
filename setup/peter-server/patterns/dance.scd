@@ -3,12 +3,10 @@
 Knob(Window.new.front.layout_(HLayout())).mode_(\vert).mouseWheelAction_({ |kn, x, y, mod, xd, yd|
 	kn.valueAction = kn.value + (yd * -0.005)
 }).signal(\value).connectTo(~progress.valueSlot);
-)
-[1,2,3,4] *.x [2,4,8,16]
-~progress.value
-TempoClock.tempo = 6.8/6
-Pdef.defaultQuant = 1
+);
 (
+//Hiphop
+//Enjoyment
 Pdef(\dance1, Pbind(
 	\progress, Pfunc({ ~progress.value }.inEnvir),
     \amp, 1,
@@ -41,10 +39,9 @@ Pdef(\dance1, Pbind(
 	\pan, Prand([-0.75, -0.25, 0.25, 0.75], inf),
 	// \dur, Pkey(\amp).linlin(0, 0.5, 0.4, 0.05),
     // \dur, 1,
-).trace(#[amp]) <> Plazy { q.buffers.rand(\peter) }).play(quant:2);
-)
+).trace(#[amp]) <> Plazy { q.buffers.rand(\peter) });
+);
 (
-
 Pdef(\dance2, Pbind(
 	// \progress, Plazy({ ~progress }.inEnvir),
     \amp, 1,
@@ -70,11 +67,11 @@ Pdef(\dance2, Pbind(
 	\pan, Prand([-0.75, -0.25, 0.25, 0.75], inf),
 	// \dur, Pkey(\amp).linlin(0, 0.5, 0.4, 0.05),
     // \dur, 1,
-).trace(#[clump],) <> Plazy { q.buffers.rand(\peter) }).play(quant:2);
-)
+).trace(#[clump],) <> Plazy { q.buffers.rand(\peter) });
+);
 
 (
-
+//SMall is this it
 Pdef(\dance3, Pbind(
 	// \progress, Plazy({ ~progress }.inEnvir),
 
@@ -91,9 +88,10 @@ Pdef(\dance3, Pbind(
     \bufrate, 1,
 	\rate, Pseg([0.03, 1, 0.03], [6,2], Pseq([Pwhite(2,4), Pwhite(-4, -2)]), inf) ,
 	\dur, Pshufn([[0.5], [0.25, 0.25], [0.5], [0.27, 0.23]], inf).flatten * 0.5,
+	\dur, Pkey(\dur).blend(Pwhite(0.01, 0.05), Pfunc({~progress.value}.inEnvir)),
 	\sustain, Pfunc({ ~progress.value}.inEnvir).linexp(0, 1, 0.01, 0.4),
 	// \sustain, Pseq([0.01, 0.03], inf) * Pwhite(0.999, 1.001)
 	// \dur, Pkey(\amp).linlin(0, 0.5, 0.4, 0.05),
     // \dur, 1,
-) <> Plazy { q.buffers.seq(\peter) }).play(quant:2);
+) <> Plazy { q.buffers.seq(\peter) })
 )
