@@ -18,6 +18,7 @@ s.waitForBoot {
 		}.value;
 
 
+		~func = "lib/functions.scd".resolveRelative.load;
 		~servers = "lib/servers.scd".resolveRelative.load;
 		~buffers = "lib/buffers.scd".resolveRelative.load;
 		~servers.addDependant(~buffers);
