@@ -3,7 +3,13 @@ var mainServer = Server.local;
 
 s.options.maxLogins = 8;
 s.waitForBoot {
-	q = q !? { q.deepDo(5, _.free); q.clear; } ?? ();
+	q = q !? {
+		q.servers.free;
+		q.buffers !? _.freeAll;
+		q.buses.do(_.free);
+		q.synths.free;
+		q
+	} ?? ();
 	q.make {
 
 		~basePath = "".resolveRelative;
