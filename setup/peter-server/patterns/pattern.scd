@@ -23,6 +23,23 @@ Pdef(\peterAmpWarp, Pbind(
     \legato, Plprand(0.01, 0.8)
 ));
 
-
-
-)
+(
+Pdef(\intermission,
+	Plazy({
+		Pchain(
+			Pbind(
+				\instrument, \bufPlayerWarp,
+				\dur, Pkey(\bufdur) * 0.5,
+				\legato, 2,
+				//set rate so we play entire file
+				\rate, 1,//Pkey(\bufdur) / (Pkey(\dur) * Pkey(\legato)),
+				\ffreq, 20000,
+				\hpfreq, 80,
+				\winsize, 1
+			).trace,
+			Ppatlace([q.buffers.rand(\wovels, \pe), q.buffers.rand(\wovels, \ter)], inf).trace,
+			Pbind(\server, q.servers.seq)
+		)
+	})
+).play
+);

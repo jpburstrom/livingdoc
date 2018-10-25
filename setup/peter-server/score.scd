@@ -118,10 +118,12 @@ q.make {
 	~parts = (
 		startReset: {
 			q.playSignal(5);
+			Pdef(\intermission).play;
 		},
 
 		endReset: {
 			q.playSignal(3);
+			Pdef(\intermission).stop;
 		},
 
 		startBox: {
