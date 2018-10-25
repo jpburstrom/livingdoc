@@ -1,14 +1,12 @@
 (
-~progress = NumericControlValue(0, \unipolar);
-Knob(Window.new.front.layout_(HLayout())).mode_(\vert).mouseWheelAction_({ |kn, x, y, mod, xd, yd|
-	kn.valueAction = kn.value + (yd * -0.005)
-}).signal(\value).connectTo(~progress.valueSlot);
-);
-(
 //Hiphop
 //Enjoyment
 Pdef(\dance1, Pbind(
-	\progress, Pfunc({ ~progress.value }.inEnvir),
+	\totalDur, Pdefn(\totalDur, 30),
+	\progress, Pwhite(
+		Pseg([1, 1, 0], 	Pseq([0.3, 0.7]) * Pkey(\totalDur)),
+		Pseg([1, 1, 0.4], 	Pseq([0.2, 0.8]) * Pkey(\totalDur))
+	),
     \amp, 1,
 	\instrument, \bufPlayerWarp,
     // \startPos, Pseg([0, 1, 0], 5, repeats:inf),
@@ -23,58 +21,65 @@ Pdef(\dance1, Pbind(
 	}.inEnvir),
 	\server, Plazy { q.servers.asPattern },
 	\rq, 1,
-	\ffreq, Pexprand(Pfuncn({ ~progress.value}.inEnvir, inf).linexp(0, 1, 8000, 400), 10000),
+	\ffreq, Pexprand(Pkey(\progress).linexp(0, 1, 8000, 400), 10000),
     //\freqshift, [0, -50, 100, -2000],
    // \amp, Pkey(\clump).reciprocal * p{ var x=0; loop { x = (x * 0.8) + (q.buses.ampBus.getSynchronous * 20); x.yield; }  } ,
 	\amp, 0.5,
-    // \bufnum, ~buffers[0],
+// \bufnum, ~buffers[0],
 	\bufrate, Pfunc { |ev| 1 ! ev.clump },
 	\hpfreq, Pkey(\progress).linexp(0, 1, 100, 800),
 	\rate, Pif(Pfunc { 0.1.coin }, Pwhite(1.0, 4), 1), //pitch
 	// \rate, 1,
     // \bufrate, 1,
-	\dur, Pshufn([0.5, 0.25, 0.5, 0.25, 0.75, 0.25], inf),
+	\dur, Pseq([
+		Pshufn([0.5, 0.25, 0.5, 0.25, 0.75, 0.25], 8),
+		Pn(0.25, 32),
+	], inf),
 	\sustain, Pkey(\progress).linexp(0, 1, 0.4, 2) / Pkey(\clump),
 	\strum, Pfunc { |ev| ev.dur / ev.clump },
 	\pan, Prand([-0.75, -0.25, 0.25, 0.75], inf),
 	// \dur, Pkey(\amp).linlin(0, 0.5, 0.4, 0.05),
     // \dur, 1,
-).trace(#[amp]) <> Plazy { q.buffers.rand(\peter) });
+) <> Plazy { q.buffers.rand(\peter) });
 );
 (
-Pdef(\dance2, Pbind(
-	// \progress, Plazy({ ~progress }.inEnvir),
-    \amp, 1,
-	\instrument, \bufPlayerWarp,
-    // \startPos, Pseg([0, 1, 0], 5, repeats:inf),
-	\startPos, Pseq([0.0, 0.33], inf),
-	// \startPos, Pbrown(0.33, 0.37) * Pkey(\peter),
-	    // \startPos, 0.2,
-	\server, Plazy { q.servers.asPattern },
-	\rq, 0.1,
-	\ffreq, Pseq([3200, 12000], inf) * Pwhite(0.9, 1.1),
-	\hpfreq, 100,
-    //\freqshift, [0, -50, 100, -2000],
-   // \amp, Pkey(\clump).reciprocal * p{ var x=0; loop { x = (x * 0.8) + (q.buses.ampBus.getSynchronous * 20); x.yield; }  } ,
-	// \bufnum, ~buffers[0],
-	\bufrate, 1,
-	\rate, Pif(Pfunc { 0.1.coin }, Pwhite(1.0, 4), 1), //pitch
-	\dur, 0.5,
-	\clump, Pwrand([1, 2], [0.1, 0.9], inf),
-	\sustain, Pfunc { |ev| 0.1.dup(ev.clump) },
-	\amp, Pfunc { |ev| Array.geom(ev.clump, 1, 0.67) },
-    \strum, Pkey(\dur) * 1.5,
-	\pan, Prand([-0.75, -0.25, 0.25, 0.75], inf),
-	// \dur, Pkey(\amp).linlin(0, 0.5, 0.4, 0.05),
-    // \dur, 1,
-).trace(#[clump],) <> Plazy { q.buffers.rand(\peter) });
+Pdef(\dance2, { |dur=30|
+	Pbind(
+		// \progress, Plazy({ ~progress }.inEnvir),
+		\amp, 1,
+		\instrument, \bufPlayerWarp,
+		// \startPos, Pseg([0, 1, 0], 5, repeats:inf),
+		\startPos, Pseq([0.0, 0.33], inf),
+		// \startPos, Pbrown(0.33, 0.37) * Pkey(\peter),
+		// \startPos, 0.2,
+		\server, Plazy { q.servers.asPattern },
+		\rq, 0.1,
+		\ffreq, Pseq([3200, 12000], inf) * Pwhite(0.9, 1.1),
+		\hpfreq, 100,
+		//\freqshift, [0, -50, 100, -2000],
+		// \amp, Pkey(\clump).reciprocal * p{ var x=0; loop { x = (x * 0.8) + (q.buses.ampBus.getSynchronous * 20); x.yield; }  } ,
+		// \bufnum, ~buffers[0],
+		\bufrate, 1,
+		\rate, Pif(Pfunc { 0.1.coin }, Pwhite(1.0, 4), 1), //pitch
+		\dur, 0.5,
+		\clump, Pwrand([1, 2], [0.1, 0.9], inf),
+		\sustain, Pfunc { |ev| 0.1.dup(ev.clump) },
+		\amp, Pfunc { |ev| Array.geom(ev.clump, 1, 0.67) },
+		\strum, Pkey(\dur) * 1.5,
+		\pan, Prand([-0.75, -0.25, 0.25, 0.75], inf),
+		// \dur, Pkey(\amp).linlin(0, 0.5, 0.4, 0.05),
+		// \dur, 1,
+	) <> Plazy { q.buffers.rand(\peter) }
+});
+
 );
 
 (
 //SMall is this it
 Pdef(\dance3, Pbind(
 	// \progress, Plazy({ ~progress }.inEnvir),
-
+	\totalDur, Pdefn(\totalDur, 30),
+	\progress, Plprand(0, 1) * Pseg([0.01, 1], Pkey(\totalDur)),
     \amp, 2,
 	\instrument, \bufPlayerWarp,
     // \startPos, Pseg([0, 1, 0], 5, repeats:inf),
@@ -88,8 +93,8 @@ Pdef(\dance3, Pbind(
     \bufrate, 1,
 	\rate, Pseg([0.03, 1, 0.03], [6,2], Pseq([Pwhite(2,4), Pwhite(-4, -2)]), inf) ,
 	\dur, Pshufn([[0.5], [0.25, 0.25], [0.5], [0.27, 0.23]], inf).flatten * 0.5,
-	\dur, Pkey(\dur).blend(Pwhite(0.01, 0.05), Pfunc({~progress.value}.inEnvir)),
-	\sustain, Pfunc({ ~progress.value}.inEnvir).linexp(0, 1, 0.01, 0.4),
+	\lag, Pwhite(-0.05, 0.05) * Pkey(\progress),
+	\sustain, Pkey(\progress).linexp(0, 1, 0.01, 0.4),
 	// \sustain, Pseq([0.01, 0.03], inf) * Pwhite(0.999, 1.001)
 	// \dur, Pkey(\amp).linlin(0, 0.5, 0.4, 0.05),
     // \dur, 1,

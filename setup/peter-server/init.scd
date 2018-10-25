@@ -49,4 +49,10 @@ s.waitForBoot {
 
 { ReplaceOut.ar(0, In.ar(0, 2).tanh) }.play
 
-
+q.progress
+(
+q.progress = NumericControlValue(0, \unipolar);
+Knob(Window.new.front.layout_(HLayout())).mode_(\vert).mouseWheelAction_({ |kn, x, y, mod, xd, yd|
+	kn.valueAction = kn.value + (yd * -0.005)
+}).signal(\value).connectTo(q.progress.valueSlot);
+);
