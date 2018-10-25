@@ -29,11 +29,11 @@ s.waitForBoot {
 		~buffers = "lib/buffers.scd".resolveRelative.load;
 		~servers.addDependant(~buffers);
 		~servers.addPermanent(mainServer);
-
+		~servers.startUpdates;
 		(~basePath +/+ "synthdefs/*").loadPaths;
 		(~basePath +/+ "patterns/*").loadPaths;
 
-		~buffers.readDirectory(~samplePath.postln);
+		~buffers.readDirectory(~samplePath);
 
 		~buses = (
 			ampBus: Bus.control;
