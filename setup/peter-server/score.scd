@@ -1,6 +1,14 @@
 (
 q.make {
 
+	~verbose = true;
+
+	~dbg = { |self, what, desc|
+		if (self.verbose) {
+			what.debug(desc);
+		};
+	};
+
 	//Play reset signal
 	~playSignal = { |self, num=5|
 		fork {
@@ -137,14 +145,17 @@ q.make {
 				);
 				loop {
 					dances.keys.asArray.scramble.do { |dance|
-						dance.debug("Now playing");
+
+						q.dbg(dance, "Now playing");
 						dances[dance].yield;
 					}
 				};
 			});
 			{ |dur|
 				var ptn = stream.next;
-				ptn.debug("pattern");
+				q.dbg(ptn, "pattern");
+				q.dbg(dur, "Setting duration");
+				Pdefn(\totalDur, dur);
 				//TODO pass on total duration to pattern
 				//TODO fix hardcoded tempo
 				PatternConductor(Pfindur(dur, ptn)).tempo_(68/60).play
@@ -185,7 +196,7 @@ Pspawner({ |sp|
 		*/
 		//Ar
 		dances = q.func.divideSensibly2(
-			totalDanceDuration, numDances, 15.0).debug("dances");
+			totalDanceDuration, numDances, 15.0);
 		pauses = q.func.divideSensibly2(
 			q.calcRemainingTime - endDuration - totalDanceDuration, numDances, 30).debug("pauses");
 		numDances.do { |i|
@@ -194,7 +205,7 @@ Pspawner({ |sp|
 		};
 		q.cue(\waitForEnd, 0, endDuration);
 		q.cue(\endBox);
-		q.calcRemainingTime.debug("REMAINING SHOULD BE 0 AND IS::");
+		q.dbg(q.calcRemainingTime, "REMAINING SHOULD BE 0 AND IS::");
 	}
 
 }).play(q.clk)
