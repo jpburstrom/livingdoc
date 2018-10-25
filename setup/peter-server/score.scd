@@ -162,6 +162,7 @@ q.make {
 			});
 			{ |dur|
 				var ptn = stream.next;
+				q.playSignal(1); //XXX temporary
 				q.dbg(ptn, "pattern");
 				q.dbg(dur, "Setting duration");
 				Pdefn(\totalDur, dur);
@@ -184,7 +185,7 @@ Pspawner({ |sp|
 
 	loop {
 
-		var numDances = 7; //FIXME
+		var numDances = 2.rrand(7); //FIXME
 		var totalDanceDuration = 120;
 		var endDuration = 0.rrand(45);
 
@@ -195,19 +196,18 @@ Pspawner({ |sp|
 
 		q.resetTime;
 
-		/*
-		q.cue(\startReset, );
+		q.cue(\startReset, 2, 0);
 		q.cue(\endReset, \startBox);
 		q.cue(\waitForTrigger);
 		q.triggerWait(0, 30);
 		q.cue(\startBoxPattern);
 		q.cue(\waitForFirstDance, 0, 30);
-		*/
 		//Ar
 		dances = q.func.divideSensibly2(
 			totalDanceDuration, numDances, 15.0);
 		pauses = q.func.divideSensibly2(
 			q.calcRemainingTime - endDuration - totalDanceDuration, numDances, 30).debug("pauses");
+		pauses = 5 ! dances.size; ///TMP
 		numDances.do { |i|
 			q.cue(\pause, 0, pauses[i]);
 			q.cue(\dance, 0, dances[i]);
