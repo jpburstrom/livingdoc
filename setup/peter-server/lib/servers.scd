@@ -10,6 +10,7 @@ Proto {
 	~expires = ();
 	//serverKey->server
 	~servers = ();
+	~serverList = List();
 
 	~initOSC = {
 		~responder = OSCFunc({ |msg, time, addr|
@@ -22,14 +23,11 @@ Proto {
 	~addPermanent = { |server|
 		var key = server.name.asSymbol;
 		~expires[key] = inf;
-		~servers[key] = server;
-		currentEnvironment.changed(\add, server);
+		~prAddServer.(key, server);
 	};
 
 	~removePermanent = { |server|
-		var key = server.name.asSymbol;
-		~expires[key] = nil;
-		currentEnvironment.changed(\remove, ~servers.removeAt(key));
+		~prRemoveServer.(server.name.asSymbol);
 	};
 
 	~stopUpdates = {
@@ -48,8 +46,7 @@ Proto {
 
 			~expires.copy.keysValuesDo { |k, time|
 				if (time < SystemClock.seconds) {
-					~expires[k] = nil;
-					currentEnvironment.changed(\remove, ~servers.removeAt(k));
+					~prRemoveServer.(~servers[k]);
 				}
 			};
 
@@ -58,11 +55,25 @@ Proto {
 
 	~updateServer = { |key, hostname|
 		if (~servers[key].isNil) {
-			~servers[key] = Server.remote(key, NetAddr(hostname, 57110));
+			~prAddServer.(key, Server.remote(key, NetAddr(hostname, 57110)));
 			~servers[key].initTree;
-			currentEnvironment.changed(\add, ~servers[key]);
 		};
 		~expires.put(key, SystemClock.seconds + ~timeout);
+	};
+
+	~prAddServer = { |key, server|
+		~servers[key] = server;
+		if (~serverList.includes(server).not) {
+			~serverList.add(server);
+		};
+		currentEnvironment.changed(\add, server);
+	};
+
+	~prRemoveServer = { |key|
+		var server = ~servers.removeAt(key);
+		~expires[k] = nil;
+		~serverList.removeAllSuchThat(_==server);
+		currentEnvironment.changed(\remove, server);
 	};
 
 	~free = {
@@ -81,6 +92,17 @@ Proto {
 		Pprotect( //Doesn't catch host down error
 			Pfunc({ ~servers.choose ?? { ~fallbackServer } }.inEnvir)
 			, { "There was an error".postln });
+	};
+
+	~seq = {
+		Prout({
+			var index = 0;
+			loop {
+				index = (index + 1) % ~serverList.size;
+				~serverList[index].yield;
+			};
+		}.inEnvir);
+
 	};
 
 	~asStream = {
