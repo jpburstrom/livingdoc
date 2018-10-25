@@ -67,7 +67,12 @@ Proto {
 
 	~free = {
 		currentEnvironment.releaseDependants;
-		~servers.do(_.remove);
+		//Remove all temporary servers
+		~servers.do { |server|
+			if (~expires[server.name] != inf) {
+				server.remove;
+			};
+		};
 		~stopUpdates.value;
 	};
 
