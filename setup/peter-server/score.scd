@@ -145,12 +145,19 @@ q.make {
 					smallIsThis: Pdef(\dance3),
 					bigIsThis: Pdef(\drone2, Pbind(\octave, 3))
 				);
+				var order =  dances.keys.asArray.scramble;
 				loop {
-					dances.keys.asArray.scramble.do { |dance|
-
+					var last;
+					order.do { |dance|
 						q.dbg(dance, "Now playing");
 						dances[dance].yield;
-					}
+						last = dance
+					};
+					order = order.scramble;
+					//Avoid playing the same twice
+					while {order[0] == last} {
+						order = order.scramble;
+					};
 				};
 			});
 			{ |dur|
