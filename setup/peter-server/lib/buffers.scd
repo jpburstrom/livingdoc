@@ -62,17 +62,19 @@ Proto({
 
 	~mirrorBuffersToServer = { |server|
 		var key, what, args, buffer;
+        "Mirroring buffers to server %".format(server.name).postln;
 		Buffer.freeAll(server);
-		server.bind({
-			~history.do { |line|
-				#key, what = line;
-				args = line[2..];
-				buffer = ~prBufAtCreate.(server, key);
-				buffer.perform(what, *args);
-				server.sync;
-				buffer.updateInfo;
-			}
-		}.inEnvir);
+        forkIfNeeded {
+            ~history.do { |line|
+                #key, what = line;
+                args = line[2..];
+                buffer = ~prBufAtCreate.(server, key);
+                buffer.perform(what, *args);
+                server.sync;
+                buffer.updateInfo;
+                buffer.postln;
+            }
+        }
 
 	};
 
@@ -107,11 +109,12 @@ Proto({
 		var buffer;
 		~history.add([key, what].addAll(args));
 		~servers.do { |server|
-			fork {
-				buffer = ~prBufAtCreate.(server, key);
-				buffer.perform(what, *args);
-				server.sync;
-				buffer.updateInfo;
+            forkIfNeeded {
+                buffer = ~prBufAtCreate.(server, key);
+                buffer.perform(what, *args);
+                server.sync;
+                buffer.updateInfo;
+                buffer.postln;
 			};
 			buffer
 		};
@@ -189,7 +192,7 @@ Proto({
 				loop {
 					server = ev.server ?? { Server.default };
 					ev.bufnum = ~prChooseServerDict.(data)[server];
-					ev.bufdur = ev.bufnum.duration.max(0.001);
+					ev.bufdur = (ev.bufnum.sampleRate !? {ev.bufnum.duration} ?? { 0 }).max(0.001);
 					ev = ev.yield;
 				};
 			}.inEnvir);
@@ -205,7 +208,7 @@ Proto({
 				loop {
 					server = ev.server ?? { Server.default };
 					ev.bufnum = data[server][index];
-					ev.bufdur = ev.bufnum.duration.max(0.001);
+					ev.bufdur = (ev.bufnum.duration ?? { 0 }).max(0.001);
 					ev = ev.yield;
 					index = (index + 1) % size
 				};
