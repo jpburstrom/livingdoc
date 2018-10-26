@@ -102,7 +102,7 @@ Pdef(\dance3, Pbind(
     // \dur, 1,
 )
 <> Plazy { q.buffers.seq(\peter) }
-// <> Pbind(\server, q.servers.seq)
+<> Pbind(\server, q.servers.seq)
 )
 );
 
@@ -127,7 +127,8 @@ Pdef(\droneyFM, Pbind(
 //pi zero weirdness
 Pdef(\droneyFM_zero, Pbind(
 	\instrument, \droneyFMLight,
-	\server, Preject({|server| #[rpi3, localhost].includes(server.name) }, Plazy({ q.servers.seq })),
+	\server, Plazy({ q.servers.seq({ |server|
+		#[rpi3, localhost].includes(server.name) }) }),
 	\latency, [nil],
 	\octave, Pwrand([4, 5], [0.1, 0.9], inf),
 	\ctranspose, -2,
@@ -146,9 +147,10 @@ Pdef(\droneyFM_zero, Pbind(
 //Peter samples for drone 2
 Pdef(\peterScattered, Pbind(
 	\instrument, \bufPlayer,
-	\dur, Pwhite(2, 10),
-	\legato, 1,
+	\totalDur, Pdefn(\totalDur, 30),
+	\dur, Pbrown(1.0, 5) * Pseg([1, 0.1, 0.3], Pkey(\totalDur) / 2),
+	\sustain, 0.5,
 	\amp, 1
 ) <> Plazy { q.buffers.seq(\peter) }
-// <> Pbind(\server, q.servers.seq)
+<> Pbind(\server, q.servers.seq)
 ))

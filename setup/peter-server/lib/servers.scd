@@ -94,12 +94,13 @@ Proto {
 			, { "There was an error".postln });
 	};
 
-	~seq = {
+	~seq = { |exclude=false|
 		Prout({
-			var index = 0;
+			var list, index = 0;
 			loop {
-				index = (index + 1) % ~serverList.size;
-				~serverList[index].yield;
+				list = ~serverList.reject(exclude.value(_));
+				index = (index + 1) % list.size;
+				list[index].yield;
 			};
 		}.inEnvir);
 
