@@ -32,7 +32,7 @@ Pdef(\dance1, Pbind(
 	// \rate, 1,
     // \bufrate, 1,
 	\dur, Pseq([
-		Pshufn([0.5, 0.25, 0.5, 0.25, 0.75, 0.25], 8),
+		Pn(Plazy { Pshuf([0.5, 0.25, 0.5, 0.25, 0.75, 0.25]) }, 8),
 		Pn(0.25, 32),
 	], inf),
 	\sustain, Pkey(\progress).linexp(0, 1, 0.4, 2) / Pkey(\clump),
@@ -92,7 +92,7 @@ Pdef(\dance3, Pbind(
 	\hpfreq, 100,
     \bufrate, 1,
 	\rate, Pseg([0.03, 1, 0.03], [6,2], Pseq([Pwhite(2,4), Pwhite(-4, -2)]), inf) ,
-	\dur, Pshufn([[0.5], [0.25, 0.25], [0.5], [0.27, 0.23]], inf).flatten * 0.5,
+	\dur, Pn(Plazy { Pshuf([[0.5], [0.25, 0.25], [0.5], [0.27, 0.23]]) }, inf).flatten * 0.5,
 	\lag, Pwhite(-0.05, 0.05) * Pkey(\progress),
 	\sustain, Pkey(\progress).linexp(0, 1, 0.01, 0.4),
 	// \sustain, Pseq([0.01, 0.03], inf) * Pwhite(0.999, 1.001)
