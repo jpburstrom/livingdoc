@@ -139,11 +139,11 @@ q.make {
 			var stream = Routine({
 				var dances = (
 					//Placeholder
-					truthPractice: Pdef(\drone1, Pbind(\octave, 3)),
+					truthPractice: Ppar([Pdef(\droneyFM_zero), Pdef(\droneyFM)]),
 					hiphop: Pdef(\dance1),
 					ritual: Pdef(\dance2),
 					smallIsThis: Pdef(\dance3),
-					bigIsThis: Pdef(\drone2, Pbind(\octave, 3))
+					bigIsThis: Ppar([Pdef(\droneyFM_zero), Pdef(\peterScattered)])
 				);
 				var order =  dances.keys.asArray.scramble;
 				loop {
