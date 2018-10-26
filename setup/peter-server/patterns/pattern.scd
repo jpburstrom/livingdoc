@@ -36,10 +36,12 @@ Pdef(\intermission,
 				\ffreq, 20000,
 				\hpfreq, 80,
 				\winsize, 1
-			).trace,
-			Ppatlace([q.buffers.rand(\wovels, \pe), q.buffers.rand(\wovels, \ter)], inf).trace,
+			),
+			Ppatlace([q.buffers.rand(\wovels, \pe), q.buffers.rand(\wovels, \ter)], inf),
 			Pbind(\server, q.servers.seq)
 		)
 	})
-).play
+)
 );
+
+
