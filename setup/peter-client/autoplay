@@ -13,7 +13,7 @@ export SC_JACK_DEFAULT_OUTPUTS="system"
 
 cd /home/pi/sc
 /usr/local/bin/jackd -P75 -dalsa -dhw:0 -p1024 -n3 -s &
-./scsynth -u 57110 -a 1024 -i 2 -o 2 -b 1026 -R 0 -U plugins:share -C 0 -l 1 &
+./scsynth -u 57110 -a 1024 -i 2 -o 2 -b 1026 -R 0 -U plugins:share -C 0 -l 8 &
 
 wait $1
 
