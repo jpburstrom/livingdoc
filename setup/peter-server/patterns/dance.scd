@@ -19,7 +19,6 @@ Pdef(\dance1, Pbind(
 			ev = e.at(ev.progress).yield
 		}
 	}.inEnvir),
-	\server, Plazy { q.servers.asPattern },
 	\rq, 1,
 	\ffreq, Pexprand(Pkey(\progress).linexp(0, 1, 8000, 400), 10000),
     //\freqshift, [0, -50, 100, -2000],
@@ -40,7 +39,10 @@ Pdef(\dance1, Pbind(
 	\pan, Prand([-0.75, -0.25, 0.25, 0.75], inf),
 	// \dur, Pkey(\amp).linlin(0, 0.5, 0.4, 0.05),
     // \dur, 1,
-) <> Plazy { q.buffers.rand(\peter) });
+)
+<> Plazy { q.buffers.rand(\peter) }
+<> Pbind(\server, q.servers.asPattern)
+);
 );
 (
 Pdef(\dance2, { |dur=30|
@@ -52,7 +54,6 @@ Pdef(\dance2, { |dur=30|
 		\startPos, Pseq([0.0, 0.33], inf),
 		// \startPos, Pbrown(0.33, 0.37) * Pkey(\peter),
 		// \startPos, 0.2,
-		\server, Plazy { q.servers.asPattern },
 		\rq, 0.1,
 		\ffreq, Pseq([3200, 12000], inf) * Pwhite(0.9, 1.1),
 		\hpfreq, 100,
@@ -69,7 +70,9 @@ Pdef(\dance2, { |dur=30|
 		\pan, Prand([-0.75, -0.25, 0.25, 0.75], inf),
 		// \dur, Pkey(\amp).linlin(0, 0.5, 0.4, 0.05),
 		// \dur, 1,
-	) <> Plazy { q.buffers.rand(\peter) }
+	)
+	<> Plazy { q.buffers.seq(\peter) }
+	<> Pbind(\server, q.servers.asPattern)
 });
 
 );
@@ -86,7 +89,6 @@ Pdef(\dance3, Pbind(
 	\startPos, Pseq([0, 0.34, 0, 0.34], inf),
 	// \startPos, Pbrown(0.33, 0.37) * Pkey(\peter),
 	    // \startPos, 0.2,
-	\server, Plazy { q.servers.asPattern },
 	\rq, 1,
 	\ffreq, 10000,
 	\hpfreq, 100,
@@ -98,5 +100,55 @@ Pdef(\dance3, Pbind(
 	// \sustain, Pseq([0.01, 0.03], inf) * Pwhite(0.999, 1.001)
 	// \dur, Pkey(\amp).linlin(0, 0.5, 0.4, 0.05),
     // \dur, 1,
-) <> Plazy { q.buffers.seq(\peter) })
 )
+<> Plazy { q.buffers.seq(\peter) }
+// <> Pbind(\server, q.servers.seq)
+)
+);
+
+(
+//Drone for box
+//needs server
+Pdef(\droneyFM, Pbind(
+	\instrument, \droneyFM,
+	\octave, 3,
+	\ctranspose, 3,
+	\degree, Pwhite(0,7),
+	\scale, Scale.minorPentatonic,
+	\dur, Pwhite(10, 20),
+	\atk, Pwhite(2, 8.0),
+	\release, Pwhite(5, 10.0),
+	\legato, 1
+))
+);
+(
+//drone for zero clients
+//Needs servers -- outputs on 1 by default because of
+//pi zero weirdness
+Pdef(\droneyFM_zero, Pbind(
+	\instrument, \droneyFMLight,
+	\server, Preject({|server| #[rpi3, localhost].includes(server.name) }, Plazy({ q.servers.seq })),
+	\latency, [nil],
+	\octave, Pwrand([4, 5], [0.1, 0.9], inf),
+	\ctranspose, -2,
+	\degree, Pwhite(0,7),
+	\scale, Scale.minorPentatonic,
+	\dur, Pwhite(5, 10),
+	\atk, 0,
+	\release, Pwhite(5, 10.0),
+	\legato, 1,
+	\out, 1
+));
+);
+
+
+(
+//Peter samples for drone 2
+Pdef(\peterScattered, Pbind(
+	\instrument, \bufPlayer,
+	\dur, Pwhite(2, 10),
+	\legato, 1,
+	\amp, 1
+) <> Plazy { q.buffers.seq(\peter) }
+// <> Pbind(\server, q.servers.seq)
+))
