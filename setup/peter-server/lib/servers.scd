@@ -42,11 +42,11 @@ Proto {
 	};
 
 	~startTask = {
+		~task !? { ~task.stop };
 		~task = SkipJack({
-
 			~expires.copy.keysValuesDo { |k, time|
 				if (time < SystemClock.seconds) {
-					~prRemoveServer.(~servers[k]);
+					~prRemoveServer.(k);
 				}
 			};
 
