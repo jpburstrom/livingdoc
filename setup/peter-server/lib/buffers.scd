@@ -97,7 +97,7 @@ Proto({
 	~prBufAtCreate = { | server, keys|
 		keys = keys ++ server;
 		~bufs.at(*keys) ?? {
-			var buf = Buffer(server, 0, 1);
+			var buf = Buffer(server);
 			~bufs.put(*(keys ++ buf));
 			buf
 		};
@@ -107,7 +107,7 @@ Proto({
 		var buffer;
 		~history.add([key, what].addAll(args));
 		~servers.do { |server|
-			server.bind {
+			fork {
 				buffer = ~prBufAtCreate.(server, key);
 				buffer.perform(what, *args);
 				server.sync;
@@ -122,6 +122,7 @@ Proto({
 		~history.clear;
 		~bufs.leafDo({ |path, buf|
 			buf.free;
+			~bufs[path] = nil;
 		});
 	};
 
