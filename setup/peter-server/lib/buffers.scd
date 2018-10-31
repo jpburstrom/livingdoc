@@ -61,18 +61,37 @@ Proto({
 	};
 
 	~mirrorBuffersToServer = { |server|
-		var key, what, args, buffer;
-		Buffer.freeAll(server);
-		server.bind({
-			~history.do { |line|
-				#key, what = line;
-				args = line[2..];
-				buffer = ~prBufAtCreate.(server, key);
-				buffer.perform(what, *args);
-				server.sync;
-				buffer.updateInfo;
-			}
-		}.inEnvir);
+		var key, what, args, buffer, buffers = List();
+        "Mirroring buffers to server %".format(server.name).postln;
+        forkIfNeeded {
+            //Make sure all buffers are freed, if restarting server but not clients
+            server.makeBundle(nil, {
+                128.do { |b|
+                    server.sendMsg(\b_free, b);
+                };
+            });
+            "waiting for sync".postln;
+            server.sync;
+            server.makeBundle(nil, {
+                ~history.do { |line|
+                    #key, what = line;
+                    args = line[2..];
+                    buffer = ~prBufAtCreate.(server, key);
+                    buffer.perform(what, *args);
+                    buffers.add(buffer);
+                }
+            }.inEnvir);
+            "waiting for sync".postln;
+            server.sync;
+            server.makeBundle(nil, {
+                buffers.do { |buffer|
+                    buffer.updateInfo;
+                }
+            });
+            server.sync;
+            buffers.do(_.postln);
+            "buffers loaded for server %".format(server).postln;
+        }
 
 	};
 
@@ -107,11 +126,13 @@ Proto({
 		var buffer;
 		~history.add([key, what].addAll(args));
 		~servers.do { |server|
-			fork {
-				buffer = ~prBufAtCreate.(server, key);
-				buffer.perform(what, *args);
-				server.sync;
-				buffer.updateInfo;
+            forkIfNeeded {
+                buffer = ~prBufAtCreate.(server, key);
+                buffer.perform(what, *args);
+                server.sync;
+                buffer.updateInfo;
+                server.sync;
+                buffer.postln;
 			};
 			buffer
 		};
@@ -185,11 +206,13 @@ Proto({
 		var data = ~bufs.at(*keys);
 		data !? {
 			Prout({ |ev|
-				var server;
+				var server, dict;
 				loop {
-					server = ev.server ?? { Server.default };
-					ev.bufnum = ~prChooseServerDict.(data)[server];
-					ev.bufdur = ev.bufnum.duration.max(0.001);
+                    server = ev.server ?? { Server.default };
+                    dict = ~prChooseServerDict.(data);
+                    //FIXME this is bad, but a workaround for now
+                    ev.bufnum = dict[server] ?? { dict[Server.default] };
+					ev.bufdur = (ev.bufnum.sampleRate !? {ev.bufnum.duration} ?? { 0 }).max(0.001);
 					ev = ev.yield;
 				};
 			}.inEnvir);
@@ -205,7 +228,7 @@ Proto({
 				loop {
 					server = ev.server ?? { Server.default };
 					ev.bufnum = data[server][index];
-					ev.bufdur = ev.bufnum.duration.max(0.001);
+					ev.bufdur = (ev.bufnum.duration ?? { 0 }).max(0.001);
 					ev = ev.yield;
 					index = (index + 1) % size
 				};

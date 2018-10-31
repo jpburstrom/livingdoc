@@ -97,16 +97,17 @@ q.make {
 
 
 	~cue = { |self ...args|
-		var cues;
+		var cues, currentDuration;
 		"Cueing %".format(args).postln;
 		while { args[0].isSymbol } {
 			cues = cues.add(args.removeAt(0));
 		};
-		self.currentDuration = self.calcTime(*args);
+		currentDuration = self.calcTime(*args);
 		cues.do { |cue|
-			self.parts[cue].value(self.currentDuration);
+			self.parts[cue].value(currentDuration);
 		};
-		self.spawner.wait(self.currentDuration);
+		self.spawner.wait(currentDuration.debug("waiting"));
+        self.currentDuration = currentDuration;
 	};
 
 	~calcTime = { |self, m, s|
@@ -135,6 +136,10 @@ q.make {
 			q.vibro.release;
 		},
 
+        pause: {
+            q.cue(\startBox);
+        },
+
 		dance: { |self, dur|
 			///XXX a bit verbose
 			var stream = Routine({
@@ -147,6 +152,9 @@ q.make {
 					bigIsThis: Pdef(\peterScattered)
 				);
 				var order =  dances.keys.asArray.scramble;
+                if ("DANCE".getenv.notNil) {
+                    order = ["DANCE".getenv.asSymbol];
+                };
 				loop {
 					var last;
 					order.do { |dance|
@@ -163,6 +171,7 @@ q.make {
 			});
 			{ |dur|
 				var ptn = stream.next;
+                q.cue(\endBox);
 				q.playSignal(1); //XXX temporary
 				q.dbg(ptn, "pattern");
 				q.dbg(dur, "Setting duration");
@@ -179,7 +188,10 @@ q.make {
 );
 (
 q.initClock;
+
 Pspawner({ |sp|
+    
+    var debug = "SCOREDEBUG".getenv;
 
 	q.spawner = sp;
 	q.postTime;
@@ -198,8 +210,10 @@ Pspawner({ |sp|
 		q.resetTime;
 
 
-		q.cue(\startReset, 2, 0);
-		q.cue(\endReset, \startBox);
+        if (debug != "dances") {
+            q.cue(\startReset, 2, 0);
+            q.cue(\endReset, \startBox);
+        };
 		//q.cue(\waitForTrigger);
 		//q.triggerWait(0, 30);
 		//q.cue(\startBoxPattern);
@@ -207,19 +221,26 @@ Pspawner({ |sp|
 		//Ar
 
 
-		dances = [80, 70, 50, 40, 60].scramble;
-		pauses = [150, 80, 90, 70, 60, 30].scramble;
 
+        //Debug dances with short breaks
+        if (debug == "dances") {
+            pauses = 20 ! 7;
+            dances = 20 ! 6;
+        } {
+            dances = [80, 70, 50, 40, 60].scramble;
+            pauses = [150, 80, 90, 70, 60, 30].scramble;
+            while { pauses[0] < 60 } {
+                pauses.rotate;
+            };
+        };
 
-		while { pauses[0] < 60 } {
-			pauses.rotate;
-		};
-
-
-		q.cue(\pause, 0, pauses[0]);
+        if (debug != "dances") {
+            q.cue(\pause, 0, pauses[0]);
+        };
 		numDances.do { |i|
 			q.cue(\dance, 0, dances[i]);
 			q.cue(\pause, 0, pauses[i+1]);
+            5.wait;
 		};
 		//q.cue(\waitForEnd, 0, endDuration);
 		q.cue(\endBox);
