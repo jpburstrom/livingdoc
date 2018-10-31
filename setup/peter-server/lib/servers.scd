@@ -4,7 +4,7 @@ Proto {
 	~fallbackServer = Server.internal;
 
 	//Timeout after server is removed from pool
-	~timeout = 4;
+	~timeout = 8;
 
 	//serverKey->expiryTime
 	~expires = ();
@@ -55,18 +55,35 @@ Proto {
 
 	~updateServer = { |key, hostname|
 		if (~servers[key].isNil) {
-			~prAddServer.(key, Server.remote(key, NetAddr(hostname, 57110)));
-			~servers[key].initTree;
+            if (~servers[key] != \pending) {
+                var server, addr;
+                ~servers[key] == \pending;
+                "Adding remote server at %".format(key).postln;
+                NetAddr(hostname, 57110).connect({
+                    "Removing server %".postln;
+                    ~prRemoveServer.(k);
+                }.inEnvir);
+                server = Server(key, addr);
+                server.options.protocol = \tcp;
+                server.startAliveThread(0);
+
+                server.doWhenBooted({
+                    ~prAddServer.(key, server);
+                    ~servers[key].initTree;
+                }.inEnvir, 30, { ~servers[key] = nil; }.inEnvir)
+            };
 		};
-		~expires.put(key, SystemClock.seconds + ~timeout);
+        ~expires.put(key, SystemClock.seconds + ~timeout);
 	};
 
 	~prAddServer = { |key, server|
-		~servers[key] = server;
-		if (~serverList.includes(server).not) {
-			~serverList.add(server);
-		};
-		currentEnvironment.changed(\add, server);
+        if (~servers.includes(server).not) {
+            ~servers[key] = server;
+            if (~serverList.includes(server).not) {
+                ~serverList.add(server);
+            };
+            currentEnvironment.changed(\add, server);
+        }
 	};
 
 	~prRemoveServer = { |key|
@@ -90,7 +107,7 @@ Proto {
 	~asPattern = {
 		//Fallback to internal server
 		Pprotect( //Doesn't catch host down error
-			Pfunc({ ~servers.choose ?? { ~fallbackServer } }.inEnvir)
+			Pfunc({ ~serverList.choose ?? { ~fallbackServer } }.inEnvir)
 			, { "There was an error".postln });
 	};
 
