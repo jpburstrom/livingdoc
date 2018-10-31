@@ -1,3 +1,4 @@
+"Loading score".postln;
 (
 q.make {
 
@@ -199,7 +200,7 @@ Pspawner({ |sp|
 
 		q.cue(\startReset, 2, 0);
 		q.cue(\endReset, \startBox);
-		q.cue(\waitForTrigger);
+		//q.cue(\waitForTrigger);
 		//q.triggerWait(0, 30);
 		//q.cue(\startBoxPattern);
 		//q.cue(\waitForFirstDance, 0, 30);
