@@ -131,6 +131,7 @@ Proto({
                 buffer.perform(what, *args);
                 server.sync;
                 buffer.updateInfo;
+                server.sync;
                 buffer.postln;
 			};
 			buffer
@@ -205,10 +206,12 @@ Proto({
 		var data = ~bufs.at(*keys);
 		data !? {
 			Prout({ |ev|
-				var server;
+				var server, dict;
 				loop {
-					server = ev.server ?? { Server.default };
-					ev.bufnum = ~prChooseServerDict.(data)[server];
+                    server = ev.server ?? { Server.default };
+                    dict = ~prChooseServerDict.(data);
+                    //FIXME this is bad, but a workaround for now
+                    ev.bufnum = dict[server] ?? { dict[Server.default] };
 					ev.bufdur = (ev.bufnum.sampleRate !? {ev.bufnum.duration} ?? { 0 }).max(0.001);
 					ev = ev.yield;
 				};

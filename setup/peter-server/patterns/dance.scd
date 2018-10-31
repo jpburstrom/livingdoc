@@ -37,6 +37,7 @@ Pdef(\dance1, Pbind(
 	\sustain, Pkey(\progress).linexp(0, 1, 0.4, 2) / Pkey(\clump),
 	\strum, Pfunc { |ev| ev.dur / ev.clump },
 	\pan, Prand([-0.75, -0.25, 0.25, 0.75], inf),
+    \latency, [nil]
 	// \dur, Pkey(\amp).linlin(0, 0.5, 0.4, 0.05),
     // \dur, 1,
 )
@@ -70,6 +71,7 @@ Pdef(\dance2, { |dur=30|
 		\pan, Prand([-0.75, -0.25, 0.25, 0.75], inf),
 		// \dur, Pkey(\amp).linlin(0, 0.5, 0.4, 0.05),
 		// \dur, 1,
+        \latency, [nil]
 	)
 	<> Plazy { q.buffers.seq(\peter) }
 	<> Pbind(\server, q.servers.asPattern)
@@ -97,12 +99,13 @@ Pdef(\dance3, Pbind(
 	\dur, Pn(Plazy { Pshuf([[0.5], [0.25, 0.25], [0.5], [0.27, 0.23]]) }, inf).flatten * 0.5,
 	\lag, Pwhite(-0.05, 0.05) * Pkey(\progress),
 	\sustain, Pkey(\progress).linexp(0, 1, 0.01, 0.4),
+    \latency, [nil]
 	// \sustain, Pseq([0.01, 0.03], inf) * Pwhite(0.999, 1.001)
 	// \dur, Pkey(\amp).linlin(0, 0.5, 0.4, 0.05),
     // \dur, 1,
 )
 <> Plazy { q.buffers.seq(\peter) }
-<> Pbind(\server, q.servers.seq)
+<> Pbind(\server, q.servers.asPattern)
 )
 );
 
@@ -145,12 +148,14 @@ Pdef(\droneyFM_zero, Pbind(
 
 (
 //Peter samples for drone 2
-Pdef(\peterScattered, Pbind(
+Pdef(\peterScattered, (Pbind(
+    \latency, [nil],
 	\instrument, \bufPlayer,
 	\totalDur, Pdefn(\totalDur, 30),
 	\dur, Pbrown(1.0, 5) * Pseg([1, 0.1, 0.3], Pkey(\totalDur) / 2),
 	\sustain, 0.5,
 	\amp, 1
 ) <> Plazy { q.buffers.seq(\peter) }
-<> Pbind(\server, q.servers.seq)
-))
+<> Plazy { Pbind(\server, q.servers.asPattern) }
+).trace)
+)

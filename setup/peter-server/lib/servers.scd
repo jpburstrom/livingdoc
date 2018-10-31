@@ -57,9 +57,9 @@ Proto {
 		if (~servers[key].isNil) {
             if (~servers[key] != \pending) {
                 var server, addr;
-                ~servers[key] == \pending;
+                ~servers[key] = \pending;
                 "Adding remote server at %".format(key).postln;
-                NetAddr(hostname, 57110).connect({
+                addr = NetAddr(hostname, 57110).connect({
                     "Removing server %".postln;
                     ~prRemoveServer.(k);
                 }.inEnvir);

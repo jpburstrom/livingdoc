@@ -30,17 +30,19 @@ Pdef(\intermission,
 			Pbind(
 				\instrument, \bufPlayerWarp,
 				\dur, Pkey(\bufdur) * 0.5,
+                \latency, [nil],
 				\legato, 2,
 				//set rate so we play entire file
 				\rate, 1,//Pkey(\bufdur) / (Pkey(\dur) * Pkey(\legato)),
 				\ffreq, 20000,
 				\hpfreq, 80,
-				\winsize, 1
+				\winsize, 1,
+                \amp, 1,
 			),
 			Ppatlace([q.buffers.rand(\wovels, \pe), q.buffers.rand(\wovels, \ter)], inf),
 			Pbind(\server, q.servers.seq)
 		)
-	})
+	}).trace
 )
 );
 
