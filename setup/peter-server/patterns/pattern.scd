@@ -4,7 +4,7 @@ Pdef(\peterAmpWarp, Pbind(
     \startPos, Prand([0.0, 0.35], inf),
     \clump, 1,
     //\freqshift, [0, -50, 100, -2000],
-    \amp, Pkey(\clump).reciprocal * p{ var x=0; loop { x = (x * 0.8) + (q.buses.ampBus.getSynchronous * 20); x.yield; }  } ,
+    \amp, Pkey(\clump).reciprocal * p{ var x=0; loop { x = (x * 0.8) + (q.buses.ampBus.getSynchronous * 10); x.yield; }  } ,
     //\amp, 0.5,
     // \bufnum, ~buffers[0],
     \strum, 0.125,
