@@ -130,10 +130,12 @@ q.make {
 
 		startBox: {
 			q.vibro = (instrument: \vibroBox, ampBus: q.buses.ampBus, dur:inf).play;
+			Pdef(\peterAmpWarp).play;
 		},
 
 		endBox: {
 			q.vibro.release;
+			Pdef(\peterAmpWarp).stop;
 		},
 
         pause: {

@@ -5,9 +5,7 @@ Pdef(\peterAmpWarp, Pbind(
     \startPos, Pseg([0, 1], Prand([0.75, 0.5, 1.5, 0.125], inf), repeats:inf),
     \startPos, Prand([0.0, 0.35], inf),
     // \startPos, 0.2,
-    \clump, 4,
-    \server, Plazy { Pxrand(q.servers, inf) },
-    \bufnum, Pfunc { |ev| q.buffers[ev.server.name].choose },
+    \clump, 1,
     //\freqshift, [0, -50, 100, -2000],
     \amp, Pkey(\clump).reciprocal * p{ var x=0; loop { x = (x * 0.8) + (q.ampBus.getSynchronous * 20); x.yield; }  } ,
     //\amp, 0.5,
@@ -21,7 +19,11 @@ Pdef(\peterAmpWarp, Pbind(
     \dur, Pkey(\amp).linlin(0, 0.5, 0.4, 0.05),
     // \dur, 1,
     \legato, Plprand(0.01, 0.8)
-));
+)
+<> Plazy { q.buffers.seq(\peter) }
+//Play on all servers except box
+<> Plazy { Pbind(\server, q.servers.seq({ |s| s = q.mainServer })) }
+);
 
 (
 Pdef(\intermission,
