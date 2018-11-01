@@ -239,7 +239,7 @@ Pspawner({ |sp|
             dances = [80, 70, 50, 40, 60].scramble;
             pauses = [150, 80, 90, 70, 60, 30].scramble;
             while { pauses[0] < 60 } {
-                pauses.rotate;
+               pauses = pauses.rotate;
             };
         };
 
