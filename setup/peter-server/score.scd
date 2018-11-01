@@ -120,6 +120,7 @@ q.make {
 	~parts = (
 		startReset: {
 			q.playSignal(5);
+            q.spawner.wait(5);
 			Pdef(\intermission).play;
 		},
 
