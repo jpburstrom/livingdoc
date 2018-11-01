@@ -47,6 +47,14 @@ s.waitForBoot {
 
 	};
 
+	//Get trigger from box, play peter in speaker
+	OSCdef(\onset, { //closure
+		var stream = Pdef(\singlePeters).asStream;
+		{ |args|
+			stream.next((amp: args[3].linlin(0, 0.5, 0, 1)));
+		}
+	}.value, '/onset');
+
 	"score.scd".resolveRelative.load;
 }
 )

@@ -47,3 +47,10 @@ Pdef(\intermission,
 );
 
 
+//Pattern for single onsets
+Pdef(\singlePeters, (Pbind(
+    \latency, [nil],
+	\instrument, \bufPlayer,
+) <> Plazy { q.buffers.seq(\peter) }
+<> Plazy { Pbind(\server, q.servers.asPattern) }
+))
