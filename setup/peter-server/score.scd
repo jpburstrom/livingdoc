@@ -197,7 +197,13 @@ Pspawner({ |sp|
     var debug = "SCOREDEBUG".getenv;
 
 	q.spawner = sp;
+    q.resetTime;
 	q.postTime;
+
+    if (debug == "box") {
+        q.cue(\startBox);
+        sp.wait(inf);
+    };
 
 	loop {
 
