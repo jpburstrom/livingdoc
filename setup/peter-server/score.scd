@@ -221,7 +221,7 @@ Pspawner({ |sp|
 
         if (debug != "dances") {
             q.cue(\startReset, 2, 0);
-            q.cue(\endReset, \startBox);
+            q.cue(\endReset);
         };
 		//q.cue(\waitForTrigger);
 		//q.triggerWait(0, 30);
