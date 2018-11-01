@@ -230,14 +230,20 @@ Proto({
 
 	~seq = { |...keys|
 		var data = ~listAt.(*keys);
+        var listAt = ~listAt.inEnvir;
 		data !? {
 			var size = data.values[0].size;
 			Prout({ |ev|
 				var server, index=0;
 				loop {
 					server = ev.server ?? { Server.default };
-					ev.bufnum = data[server][index];
-					ev.bufdur = (ev.bufnum.duration ?? { 0 }).max(0.001);
+                    data[server] ?? {
+                        data = listAt.(*keys);
+                    };
+					ev.bufnum = data[server] !? { |d| d[index] };
+                    ev.bufnum !? {
+                        ev.bufdur = (ev.bufnum.sampleRate !? {ev.bufnum.duration} ?? { 0 }).max(0.001);
+                    };
 					ev = ev.yield;
 					index = (index + 1) % size
 				};
