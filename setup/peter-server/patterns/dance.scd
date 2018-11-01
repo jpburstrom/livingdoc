@@ -113,7 +113,7 @@ Pdef(\dance3, Pbind(
 //Drone for box
 //needs server
 Pdef(\droneyFM, Pbind(
-	\instrument, \droneyFM,
+	\instrument, \droneyFMLight,
 	\octave, 3,
 	\ctranspose, 3,
 	\degree, Pwhite(0,7),
