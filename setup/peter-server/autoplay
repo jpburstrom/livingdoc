@@ -3,6 +3,10 @@
 outcard="hw:sndrpihifiberry"
 incard="hw:CARD1"
 
+for pi in `arp -a | grep b8:27:eb | grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'`; do
+    ssh pi@$pi sudo systemctl restart autoplay
+done
+
 #Need to do this to run as root
 if [ ! -e /usr/lib/arm-linux-gnueabihf/jack ]; then
     ln -s /usr/local/lib/jack /usr/lib/arm-linux-gnueabihf/jack
