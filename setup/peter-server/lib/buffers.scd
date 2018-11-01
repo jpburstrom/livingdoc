@@ -61,7 +61,7 @@ Proto({
 	};
 
 	~mirrorBuffersToServer = { |server|
-		var key, what, args, buffer, buffers = List();
+		var key, what, args, buffer, buffers = Dictionary();
         "Mirroring buffers to server %".format(server.name).postln;
         forkIfNeeded {
             //Make sure all buffers are freed, if restarting server but not clients
@@ -78,17 +78,20 @@ Proto({
                     args = line[2..];
                     buffer = ~prBufAtCreate.(server, key);
                     buffer.perform(what, *args);
-                    buffers.add(buffer);
+                    buffers[key] = buffer;
                 }
             }.inEnvir);
             "waiting for sync".postln;
             server.sync;
             server.makeBundle(nil, {
-                buffers.do { |buffer|
-                    buffer.updateInfo;
+                buffers.keysValuesDo { |key, buf|
+                    buf.updateInfo;
                 }
             });
             server.sync;
+            buffers.keysValuesDo { |key, buf|
+                ~prBufPut.(server, key, buf);
+            };
             buffers.do(_.postln);
             "buffers loaded for server %".format(server).postln;
         }
@@ -117,10 +120,15 @@ Proto({
 		keys = keys ++ server;
 		~bufs.at(*keys) ?? {
 			var buf = Buffer(server);
-			~bufs.put(*(keys ++ buf));
+			//~bufs.put(*(keys ++ buf));
 			buf
 		};
 	};
+
+	~prBufPut = { |server, keys, buf|
+        keys = keys ++ server;
+        ~bufs.put(*(keys ++ buf));
+    };
 
 	~prBufferPerform = { |key, what ...args|
 		var buffer;
@@ -132,6 +140,7 @@ Proto({
                 server.sync;
                 buffer.updateInfo;
                 server.sync;
+                ~prBufPut.(server, key, buffer);
                 buffer.postln;
 			};
 			buffer
