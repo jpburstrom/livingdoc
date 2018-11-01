@@ -3,6 +3,8 @@ var mainServer = Server.local;
 
 s.options.maxLogins = 8;
 s.waitForBoot {
+    "/usr/local/bin/jack_connect alsa_in:capture_1 SuperCollider:in_1".unixCmd;
+
 	q = q !? {
 		q.servers.free;
 		q.buffers !? _.freeAll;

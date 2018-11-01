@@ -28,7 +28,8 @@ alsa_in -d $incard -c1 -p1024 -n3 &
 sleep 1
 #./scsynth -u 57110 -a 116 -i 2 -o 2 -b 1026 -D 0 -R 0 -U plugins:share -C 0 -l 64
 
-`sleep 10 && jack_connect alsa_in:capture_1 SuperCollider:in_1` &
+# We're connecting from sc script
+#`sleep 10 && jack_connect alsa_in:capture_1 SuperCollider:in_1` &
 
 #./scsynth -u 57110 -a 116 -i 2 -o 2 -b 1026 -R 0 -U plugins:share -C 0 -l 8
 echo | xvfb-run --auto-servernum ./sclang -a -l sclang.yaml $WD/init.scd
