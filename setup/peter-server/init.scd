@@ -51,7 +51,7 @@ s.waitForBoot {
 	OSCdef(\onset, { //closure
 		var stream = Pdef(\singlePeters).asStream;
 		{ |args|
-			stream.next((amp: args[3].linlin(0, 0.5, 0, 1)));
+			stream.next((amp: args[3].linexp(0.01, 0.1, 0.6, 1))).play;
 		}
 	}.value, '/onset');
 
