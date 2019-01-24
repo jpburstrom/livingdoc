@@ -12,11 +12,17 @@ Pdef(\peterAmpWarp, Pbind(
     \rate, Pwhite(0.5, 2), //pitch
     \rate, Phprand(0.8, 1),
     // \bufrate, 1,
-    \dur, 0.5,
     \dur, Pkey(\amp).linlin(0, 0.5, 0.4, 0.05),
+    \dur, Pfunc { |ev|
+        if (ev.amp == 0) {
+            Rest(ev.dur)
+        } {
+            ev.dur
+        }
+    },
     // \dur, 1,
     \legato, Plprand(0.01, 0.8)
-).trace
+)
 <> Plazy { q.buffers.rand(\peter) }
 //TODO: Play on all servers except box
 <> Plazy { Pbind(\server, q.servers.seq) }
@@ -41,7 +47,7 @@ Pdef(\intermission,
 			Ppatlace([q.buffers.rand(\wovels, \pe), q.buffers.rand(\wovels, \ter)], inf),
 			Pbind(\server, q.servers.seq)
 		)
-	}).trace
+	})
 )
 );
 
