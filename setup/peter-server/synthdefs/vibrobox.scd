@@ -1,5 +1,5 @@
 SynthDef(\vibroBox, { |ampBus|
-    var onset, amp, snd = SoundIn.ar(0);
+    var good, onset, amp, snd = SoundIn.ar(0);
     // snd = HPF.ar(snd, 100);
     snd = BBandPass.ar(snd, 5000, 0.05) * 10;
 
@@ -7,10 +7,11 @@ SynthDef(\vibroBox, { |ampBus|
     // amp = Amplitude.kr(snd, 0.01, 0.5).linlin(0.0009,0.1, 0, 1).poll;
 
     amp = RunningSum.rms(snd).linlin(0.001, 0.03, 0, 1);
-    CheckBadValues.kr(amp);
+    good = BinaryOpUGen('==', 0, CheckBadValues.kr(amp));
+    amp = amp * good;
 
     onset = Coyote.kr(snd);
-    SendReply.kr(TDelay.kr(onset, 0.01), '/onset', Amplitude.ar(snd, 0.01, 0.01));
+    SendReply.kr(TDelay.kr(onset, 0.01), '/onset', Amplitude.ar(snd, 0.01, 0.01) * good); 
 
     // RunningMax.ar(amp).poll;
 
