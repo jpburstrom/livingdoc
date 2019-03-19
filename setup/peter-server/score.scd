@@ -245,8 +245,9 @@ Pspawner({ |sp|
             pauses = 20 ! 7;
             dances = 20 ! 6;
         } {
-            dances = [80, 70, 50, 40, 60].scramble;
-            pauses = [150, 80, 90, 70, 60, 30].scramble;
+            // Divide by 8/13 to make the total duration 8 minutes instead of 13
+            dances = [80, 70, 50, 40, 60].scramble * 8 / 13;
+            pauses = [150, 80, 90, 70, 60, 30].scramble * 8 / 13;
             while { pauses[0] < 60 } {
                pauses = pauses.rotate;
             };
