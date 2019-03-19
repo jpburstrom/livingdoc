@@ -124,6 +124,14 @@ q.make {
 			Pdef(\intermission).play;
 		},
 
+		midReset: {
+			Pdef(\intermission).stop;
+			q.spawner.wait(5);
+			q.playSignal(1);
+            q.spawner.wait(5);
+			Pdef(\intermission).play;
+		},
+
 		endReset: {
 			q.playSignal(3);
 			Pdef(\intermission).stop;
@@ -220,7 +228,8 @@ Pspawner({ |sp|
 
 
         if (debug != "dances") {
-            q.cue(\startReset, 2, 0);
+            q.cue(\startReset, 1, 0);
+            q.cue(\midReset, 1, 0);
             q.cue(\endReset);
         };
 		//q.cue(\waitForTrigger);
