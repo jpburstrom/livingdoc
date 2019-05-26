@@ -42,7 +42,7 @@ Pdef(\intermission,
 				\ffreq, 20000,
 				\hpfreq, 80,
 				\winsize, 1,
-                \amp, 1,
+                \amp, 0.35,
 			),
 			Ppatlace([q.buffers.rand(\wovels, \pe), q.buffers.rand(\wovels, \ter)], inf),
 			Pbind(\server, q.servers.seq)
