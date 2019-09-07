@@ -1,0 +1,20 @@
+#!/bin/bash
+
+ROOTDIR=`dirname $0`
+ASSETDIR=$ROOTDIR/media
+
+#Wait for console to finish output, needed for fbi, TODO find better way, might not always work
+sleep 5 
+
+#This would play a video file, but omxplayer doesn't play still images, so we use fbi instead
+#omxplayer -b $ASSETDIR/video.mov
+
+#Display still image
+fbi -a -T 1 -a --noverbose $ASSETDIR/dots08.jpg
+
+#fbi returns which makes script end and systemctl hangup fbi, so we need to keep script running
+#this is a quick-and-dirty way of doing that
+while [ $? -eq 0 ]
+do
+	sleep 5
+done
