@@ -6,5 +6,5 @@ ASSETDIR=$ROOTDIR/media
 
 sleep 1
 
-PLAYCMD="/usr/bin/mplayer -channels 8 -loop 0 -ao alsa:device=ttable "
-$PLAYCMD $ROOTDIR/media/anna-8ch.flac
+PLAYCMD="/usr/bin/omxplayer --loop --adev alsa:plug:ttable -b "
+$PLAYCMD $ROOTDIR/media/anna.mov
